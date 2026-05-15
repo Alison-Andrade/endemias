@@ -29,20 +29,17 @@ public class Agente {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column(unique = true, nullable = false, length = 11, columnDefinition = "CHAR(11)")
+    @Column(unique = true, length = 11, columnDefinition = "CHAR(11)")
     @JdbcTypeCode(SqlTypes.CHAR)
     private String cpf;
-
-    @Column(nullable = false)
     private String nome;
     
-    @Column(unique = true, nullable = false)
+    @Column(unique = true)
     private String email;
     
     private String telefone;
 
     @JdbcTypeCode(SqlTypes.NAMED_ENUM)
-    @Column(name = "tipo", nullable = false)
     private TipoAgente tipo;
 
     @ManyToOne(fetch = FetchType.LAZY)

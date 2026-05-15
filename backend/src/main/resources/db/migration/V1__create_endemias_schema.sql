@@ -8,7 +8,7 @@ CREATE TABLE agente (
     cpf CHAR(11) UNIQUE NOT NULL,
     nome VARCHAR(150) NOT NULL,
     telefone VARCHAR(20),
-    email VARCHAR(150) UNIQUE,
+    email VARCHAR(150) NOT NULL UNIQUE,
     tipo tipo_agente NOT NULL,
     supervisor_id BIGINT REFERENCES agente(id) ON DELETE SET NULL
 );
