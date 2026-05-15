@@ -9,7 +9,7 @@ CREATE TABLE agente (
     nome VARCHAR(150) NOT NULL,
     telefone VARCHAR(20),
     email VARCHAR(150) NOT NULL UNIQUE,
-    tipo tipo_agente NOT NULL,
+    tipo tipo_agente NOT NULL DEFAULT 'CAMPO',
     supervisor_id BIGINT REFERENCES agente(id) ON DELETE SET NULL
 );
 
@@ -22,7 +22,7 @@ CREATE TABLE area (
 CREATE TABLE quarteirao (
     id BIGSERIAL PRIMARY KEY,
     numero INTEGER NOT NULL,
-    sequencia INTEGER,
+    sequencia INTEGER DEFAULT 0,
     area_id BIGINT REFERENCES area(id) ON DELETE SET NULL
 );
 

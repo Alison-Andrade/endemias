@@ -20,7 +20,7 @@ public record AgenteResponse(
             agente.getEmail(),
             agente.getTelefone(),
             agente.getTipo(),
-            agente.getSupervisor().getId()
+            agente.getSupervisor() != null ? agente.getSupervisor().getId() : null
         );
     }
 }

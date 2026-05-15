@@ -8,6 +8,7 @@ import jakarta.persistence.FetchType;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.Index;
 import jakarta.persistence.Inheritance;
 import jakarta.persistence.InheritanceType;
 import jakarta.persistence.JoinColumn;
@@ -17,7 +18,14 @@ import lombok.Getter;
 import lombok.Setter;
 
 @Entity
-@Table(name = "visita")
+@Table(
+    name = "visita", 
+    indexes = {
+        @Index(name="idx_visita_ciclo", columnList = "ciclo_id"),
+        @Index(name="idx_visita_imovel", columnList = "imovel_id"),
+        @Index(name="idx_visita_agente", columnList = "agente_id")
+    }
+)
 @Inheritance(strategy = InheritanceType.JOINED)
 @Getter
 @Setter

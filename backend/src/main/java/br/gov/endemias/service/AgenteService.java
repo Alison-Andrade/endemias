@@ -12,7 +12,7 @@ import br.gov.endemias.repository.AgenteRepository;
 @Service
 public class AgenteService {
     
-    public final AgenteRepository repository;
+    private final AgenteRepository repository;
 
     public AgenteService(AgenteRepository repository) {
         this.repository = repository;

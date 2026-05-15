@@ -1,9 +1,12 @@
 package br.gov.endemias.dto;
 
+import org.hibernate.validator.constraints.br.CPF;
+
 import br.gov.endemias.entity.Agente;
 import br.gov.endemias.enums.TipoAgente;
+import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
-import jakarta.validation.constraints.NotNull;
+import jakarta.validation.constraints.Pattern;
 import jakarta.validation.constraints.Size;
 
 public record AgenteRequest(
@@ -12,16 +15,25 @@ public record AgenteRequest(
     String nome,
     @NotBlank(message = "O CPF do agente é obrigatório")
     @Size(min = 11, max = 11, message = "O CPF do agente deve conter exatamente 11 caracteres")
+    @CPF(message = "CPF inválido.")
     String cpf,
     @Size(max = 20, message = "O telefone do agente deve ter no máximo 20 caracteres")
+    @Pattern(regexp = "^\\(?\\d{2}\\)?\\s?9\\d{4}-?\\d{4}$", 
+             message = "Formato de celular inválido (Ex: (00) 90000-0000)")
     String telefone,
     @NotBlank(message = "O email do agente é obrigatório")
+    @Email(message = "E-mail inválido.")
     @Size(max = 150, message = "O email do agente deve ter no máximo 150 caracteres")
     String email,
-    @NotNull
     TipoAgente tipo,
     Long supervisorId
 ) {
+
+    public AgenteRequest {
+        if (tipo == null) {
+            tipo = TipoAgente.CAMPO;
+        }
+    }
 
     public Agente toEntity() {
         Agente agente = new Agente();
