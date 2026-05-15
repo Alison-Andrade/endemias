@@ -12,19 +12,19 @@ import lombok.Getter;
 import lombok.Setter;
 
 @Entity
-@Table(name = "quarteirao")
+@Table(name = "lado")
 @Getter
 @Setter
-public class Quarteirão {
+public class Lado {
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
     private Integer numero;
-    private Integer sequencia;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "area_id")
-    private Area area;
-
+    @JoinColumn(name = "quarteirao_id")
+    private Quarteirao quarteirao;
+    
 }

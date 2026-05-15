@@ -1,6 +1,7 @@
 CREATE TYPE tipo_agente AS ENUM ('CAMPO', 'SUPERVISOR', 'COORDENADOR');
-CREATE TYPE status_visita AS ENUM ('TRABALHADO', 'FECHADO', 'RECUSADO');
-CREATE TYPE tipo_imovel AS ENUM ('R', 'C', 'TB', 'O');
+CREATE TYPE status_visita AS ENUM ('TRABALHADO', 'RECUPERADO', 'FECHADO', 'RECUSADO');
+CREATE TYPE tipo_imovel AS ENUM ('RESIDENCIA', 'COMERCIO', 'TERRENO_BALDIO', 'OUTRO');
+CREATE TYPE tipo_deposito AS ENUM ('A1', 'A2', 'B', 'C', 'D1', 'D2', 'E');
 
 CREATE TABLE agente (
     id BIGSERIAL PRIMARY KEY,
@@ -13,27 +14,27 @@ CREATE TABLE agente (
 );
 
 CREATE TABLE area (
-    id SERIAL PRIMARY KEY,
+    id BIGSERIAL PRIMARY KEY,
     num_area VARCHAR(20) UNIQUE NOT NULL,
     agente_responsavel_id BIGINT REFERENCES agente(id) -- Relacionamento E_RESPONSAVEL
 );
 
 CREATE TABLE quarteirao (
-    id SERIAL PRIMARY KEY,
+    id BIGSERIAL PRIMARY KEY,
     numero INTEGER NOT NULL,
     sequencia INTEGER,
     area_id BIGINT REFERENCES area(id) ON DELETE SET NULL
 );
 
 CREATE TABLE lado (
-    id SERIAL PRIMARY KEY,
+    id BIGSERIAL PRIMARY KEY,
     numero INTEGER NOT NULL,
     logradouro VARCHAR(150) NOT NULL,
     quarteirao_id BIGINT NOT NULL REFERENCES quarteirao(id) ON DELETE CASCADE
 );
 
 CREATE TABLE imovel (
-    id SERIAL PRIMARY KEY,
+    id BIGSERIAL PRIMARY KEY,
     numero VARCHAR(10) NOT NULL,
     sequencia INTEGER,
     num_residentes INTEGER DEFAULT 0,
@@ -44,16 +45,15 @@ CREATE TABLE imovel (
 );
 
 CREATE TABLE ciclo (
-    id SERIAL PRIMARY KEY,
-    ano INTEGER NOT NULL,
+    id BIGSERIAL PRIMARY KEY,
     numero_ciclo INTEGER NOT NULL,
-    UNIQUE(ano, numero_ciclo)
+    ano INTEGER NOT NULL,
+    UNIQUE(numero_ciclo, ano)
 );
 
 CREATE TABLE visita (
-    id SERIAL PRIMARY KEY,
+    id BIGSERIAL PRIMARY KEY,
     data_visita TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
-    status status_visita NOT NULL,
     observacao TEXT,
     imovel_id BIGINT NOT NULL REFERENCES imovel(id),
     agente_id BIGINT NOT NULL REFERENCES agente(id),
@@ -62,6 +62,7 @@ CREATE TABLE visita (
 
 CREATE TABLE tratamento (
     visita_id BIGINT PRIMARY KEY REFERENCES visita(id) ON DELETE CASCADE,
+    status status_visita NOT NULL,
     qntd_eliminados INTEGER DEFAULT 0,
     qntd_tratados INTEGER DEFAULT 0,
     qntd_larvicida NUMERIC(10,2),
@@ -76,9 +77,9 @@ CREATE TABLE liraa (
 
 -- Foco: Amostras coletadas (Relacionado ao LIRAa ou Visita)
 CREATE TABLE foco (
-    id SERIAL PRIMARY KEY,
+    id BIGSERIAL PRIMARY KEY,
     visita_id BIGINT NOT NULL REFERENCES visita(id) ON DELETE CASCADE,
-    tipo_deposito VARCHAR(10) NOT NULL, -- A1, A2, B, C, D1, D2
+    tipo_deposito tipo_deposito NOT NULL,
     numero_tubito VARCHAR(50),
     resultado_laboratorio VARCHAR(100) -- Pode ser preenchido depois
 );

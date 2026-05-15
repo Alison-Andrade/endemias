@@ -1,0 +1,37 @@
+package br.gov.endemias.entity;
+
+import java.math.BigDecimal;
+
+import org.hibernate.annotations.JdbcTypeCode;
+import org.hibernate.type.SqlTypes;
+
+import br.gov.endemias.enums.StatusVisita;
+import jakarta.persistence.Column;
+import jakarta.persistence.Entity;
+import jakarta.persistence.PrimaryKeyJoinColumn;
+import jakarta.persistence.Table;
+import lombok.Getter;
+import lombok.Setter;
+
+@Entity
+@Table(name = "tratamento")
+@PrimaryKeyJoinColumn(name = "visita_id")
+@Getter
+@Setter
+public class Tratamento extends Visita {
+
+    @JdbcTypeCode(SqlTypes.NAMED_ENUM)
+    private StatusVisita status;
+    
+    @Column(name = "qntd_eliminados")
+    private Integer numEliminados;
+
+    @Column(name = "qntd_tratados")
+    private Integer numTratados;
+
+    @Column(name = "qntd_larvicida")
+    private BigDecimal qntdLarvicida;
+
+    @Column(name = "tipo_larvicida")
+    private String tipoLarvicida;
+}
