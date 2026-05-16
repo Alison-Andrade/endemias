@@ -39,7 +39,7 @@ public class LocalidadeService {
     }
 
     public LocalidadeResponse buscarPorCodigo(String codigo) {
-        Localidade localidade = localidadeRepository.findByCodigo(codigo);
+        Localidade localidade = buscarEntityPorCodigo(codigo);
         return LocalidadeResponse.fromEntity(localidade);
     }
 
@@ -55,6 +55,12 @@ public class LocalidadeService {
         Localidade localidade = buscarEntityPorId(id);
         localidadeRepository.delete(localidade);
     }
+
+    public Localidade buscarEntityPorCodigo(String codigo) {
+        return localidadeRepository.findByCodigo(codigo)
+                .orElseThrow(() -> new RuntimeException("Localidade não encontrada."));
+    }
+
 
     private Localidade buscarEntityPorId(Long id) {
         return localidadeRepository.findById(id)

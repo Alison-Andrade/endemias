@@ -24,6 +24,10 @@ public class Quarteirao {
     private Integer sequencia;
 
     @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "localidade_id")
+    private Localidade localidade;
+
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "area_id")
     private Area area;
 

@@ -58,7 +58,4 @@ public class LocalidadeController {
     public void deletar(@PathVariable Long id) {
         localidadeService.deletar(id);
     }
-    
-
-
 }

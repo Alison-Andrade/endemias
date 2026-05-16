@@ -33,7 +33,7 @@ CREATE TABLE quarteirao (
     id BIGSERIAL PRIMARY KEY,
     numero INTEGER NOT NULL,
     sequencia INTEGER DEFAULT 0,
-    localidade_id BIGINT REFERENCES localidade(id),
+    localidade_id BIGINT REFERENCES localidade(id) NOT NULL,
     area_id BIGINT REFERENCES area(id) ON DELETE SET NULL
 );
 
