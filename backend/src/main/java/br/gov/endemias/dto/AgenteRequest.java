@@ -28,13 +28,7 @@ public record AgenteRequest(
     TipoAgente tipo,
     Long supervisorId
 ) {
-
-    public AgenteRequest {
-        if (tipo == null) {
-            tipo = TipoAgente.CAMPO;
-        }
-    }
-
+    
     public Agente toEntity() {
         Agente agente = new Agente();
         preencher(agente);
@@ -46,7 +40,6 @@ public record AgenteRequest(
         agente.setCpf(this.cpf);
         agente.setTelefone(this.telefone);
         agente.setEmail(this.email);
-        agente.setTipo(this.tipo);
-        agente.setSupervisor(this.supervisorId != null ? new Agente(this.supervisorId, null, null, null, null, null, null) : null);
+        agente.setTipo(this.tipo != null ? this.tipo : TipoAgente.CAMPO);
     }
 }

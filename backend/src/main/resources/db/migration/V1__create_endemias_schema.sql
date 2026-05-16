@@ -2,6 +2,8 @@ CREATE TYPE tipo_agente AS ENUM ('CAMPO', 'SUPERVISOR', 'COORDENADOR');
 CREATE TYPE status_visita AS ENUM ('TRABALHADO', 'RECUPERADO', 'FECHADO', 'RECUSADO');
 CREATE TYPE tipo_imovel AS ENUM ('RESIDENCIA', 'COMERCIO', 'TERRENO_BALDIO', 'OUTRO');
 CREATE TYPE tipo_deposito AS ENUM ('A1', 'A2', 'B', 'C', 'D1', 'D2', 'E');
+CREATE TYPE categoria_localidade AS ENUM ('BR', 'PV', 'ST', 'FZ');
+CREATE TYPE tipo_localidade AS ENUM ('SEDE', 'OUTRO');
 
 CREATE TABLE agente (
     id BIGSERIAL PRIMARY KEY,
@@ -11,6 +13,14 @@ CREATE TABLE agente (
     email VARCHAR(150) NOT NULL UNIQUE,
     tipo tipo_agente NOT NULL DEFAULT 'CAMPO',
     supervisor_id BIGINT REFERENCES agente(id) ON DELETE SET NULL
+);
+
+CREATE TABLE localidade (
+    id BIGSERIAL PRIMARY KEY,
+    codigo VARCHAR(20) UNIQUE NOT NULL,
+    nome VARCHAR(50) NOT NULL,
+    categoria categoria_localidade NOT NULL,
+    tipo tipo_localidade NOT NULL
 );
 
 CREATE TABLE area (
@@ -23,6 +33,7 @@ CREATE TABLE quarteirao (
     id BIGSERIAL PRIMARY KEY,
     numero INTEGER NOT NULL,
     sequencia INTEGER DEFAULT 0,
+    localidade_id BIGINT REFERENCES localidade(id),
     area_id BIGINT REFERENCES area(id) ON DELETE SET NULL
 );
 
@@ -30,7 +41,7 @@ CREATE TABLE lado (
     id BIGSERIAL PRIMARY KEY,
     numero INTEGER NOT NULL,
     logradouro VARCHAR(150) NOT NULL,
-    quarteirao_id BIGINT NOT NULL REFERENCES quarteirao(id) ON DELETE CASCADE
+    quarteirao_id BIGINT NOT NULL REFERENCES quarteirao(id)
 );
 
 CREATE TABLE imovel (
@@ -41,7 +52,8 @@ CREATE TABLE imovel (
     num_caes INTEGER DEFAULT 0,
     num_gatos INTEGER DEFAULT 0,
     tipo tipo_imovel NOT NULL,
-    lado_id BIGINT   NOT NULL REFERENCES lado(id) ON DELETE CASCADE
+    lado_id BIGINT REFERENCES lado(id),
+    localidade_id BIGINT REFERENCES localidade(id)
 );
 
 CREATE TABLE ciclo (

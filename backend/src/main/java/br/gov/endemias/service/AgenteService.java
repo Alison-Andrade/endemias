@@ -7,6 +7,7 @@ import org.springframework.stereotype.Service;
 import br.gov.endemias.dto.AgenteRequest;
 import br.gov.endemias.dto.AgenteResponse;
 import br.gov.endemias.entity.Agente;
+import br.gov.endemias.enums.TipoAgente;
 import br.gov.endemias.repository.AgenteRepository;
 
 @Service
@@ -24,6 +25,18 @@ public class AgenteService {
         }
 
         Agente agente = request.toEntity();
+
+        if (request.supervisorId() != null) {
+            Agente supervisor = repository.findById(request.supervisorId())
+                .orElseThrow(() -> new RuntimeException("Supervisor não encontrado."));
+
+            if (supervisor.getTipo() != TipoAgente.SUPERVISOR) {
+                throw new RuntimeException("O agente informado como supervisor não é SUPERVISOR.");
+            }
+
+            agente.setSupervisor(supervisor);
+        }
+
         Agente agenteSalvo = repository.save(agente);
 
         return AgenteResponse.fromEntity(agenteSalvo);

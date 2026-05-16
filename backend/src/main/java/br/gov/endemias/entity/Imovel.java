@@ -52,4 +52,8 @@ public class Imovel {
     @JoinColumn(name = "lado_id")
     private Lado lado;
 
+    @ManyToOne
+    @JoinColumn(name = "localidade_id")
+    private Localidade localidade;
+
 }

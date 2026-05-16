@@ -1,6 +1,5 @@
 package br.gov.endemias.dto;
 
-import br.gov.endemias.entity.Area;
 import br.gov.endemias.entity.Quarteirao;
 import jakarta.validation.constraints.NotBlank;
 
@@ -15,7 +14,6 @@ public record QuarteiraoRequest(
 
         quarteirao.setNumero(this.numero);
         quarteirao.setSequencia(this.sequencia != null ? this.sequencia : 0);
-        quarteirao.setArea(this.areaId != null ? new Area(this.areaId, null, null) : null);
 
         return quarteirao;
     }
