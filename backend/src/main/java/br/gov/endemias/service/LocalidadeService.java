@@ -63,7 +63,7 @@ public class LocalidadeService {
     }
 
 
-    private Localidade buscarEntityPorId(Long id) {
+    public Localidade buscarEntityPorId(Long id) {
         return localidadeRepository.findById(id)
                 .orElseThrow(() -> new RegraNegocioException("Localidade não encontrada."));
     }

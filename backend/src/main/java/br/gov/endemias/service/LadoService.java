@@ -1,5 +1,7 @@
 package br.gov.endemias.service;
 
+import br.gov.endemias.exception.RegraNegocioException;
+
 import java.util.List;
 
 import org.springframework.stereotype.Service;
@@ -56,6 +58,11 @@ public class LadoService {
 
     public void deletar(Long id) {
         ladoRepository.deleteById(id);
+    }
+
+    public Lado buscarEntityPorId(Long id) {
+        return ladoRepository.findById(id)
+            .orElseThrow(() -> new RegraNegocioException("Lado nao encontrado"));
     }
 
 }

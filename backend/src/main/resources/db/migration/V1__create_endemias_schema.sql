@@ -48,14 +48,17 @@ CREATE TABLE lado (
 
 CREATE TABLE imovel (
     id BIGSERIAL PRIMARY KEY,
-    numero VARCHAR(10) NOT NULL,
+    placa VARCHAR(10),
+    numero_sms INTEGER,
     sequencia INTEGER,
     num_residentes INTEGER DEFAULT 0,
     num_caes INTEGER DEFAULT 0,
     num_gatos INTEGER DEFAULT 0,
     tipo tipo_imovel NOT NULL,
     lado_id BIGINT REFERENCES lado(id),
-    localidade_id BIGINT REFERENCES localidade(id)
+    localidade_id BIGINT REFERENCES localidade(id),
+
+    CONSTRAINT chk_placa_ou_sms CHECK (placa IS NOT NULL OR numero_sms IS NOT NULL)
 );
 
 CREATE TABLE ciclo (
