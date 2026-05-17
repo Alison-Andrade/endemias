@@ -65,10 +65,5 @@ public class LadoService {
             .orElseThrow(() -> new RegraNegocioException("Lado nao encontrado"));
     }
 
-    public Lado buscarEntityPorId(Long id) {
-        return ladoRepository.findById(id)
-            .orElseThrow(() -> new RegraNegocioException("Lado nao encontrado"));
-    }
-
 }
 
