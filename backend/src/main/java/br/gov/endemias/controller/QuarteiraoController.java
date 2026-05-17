@@ -34,7 +34,7 @@ public class QuarteiraoController {
         return quarteiraoService.cadastrar(request);
     }
 
-    @GetMapping("/{codigoLocalidade}")
+    @GetMapping("localidade/{codigoLocalidade}")
     public List<QuarteiraoResponse> listarPorLocalidade(@PathVariable String codigoLocalidade) {
         return quarteiraoService.listarPorLocalidade(codigoLocalidade);
     }

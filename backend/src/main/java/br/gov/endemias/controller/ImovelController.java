@@ -4,6 +4,7 @@ import java.util.List;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -30,23 +31,23 @@ public class ImovelController {
         return imovelService.cadastrar(request);
     }
 
-    @GetMapping
-    public List<ImovelResponse> listarPorLado(Long ladoId) {
+    @GetMapping("/lado/{ladoId}")
+    public List<ImovelResponse> listarPorLado(@PathVariable Long ladoId) {
         return imovelService.listarPorLado(ladoId);
     }
 
-    @GetMapping("{id}")
-    public ImovelResponse buscarPorId(Long id) {
+    @GetMapping("/{id}")
+    public ImovelResponse buscarPorId(@PathVariable Long id) {
         return imovelService.buscarPorId(id);
     }
 
-    @PutMapping("{id}")
-    public ImovelResponse atualizar(Long id, @RequestBody @Valid ImovelRequest request) {
+    @PutMapping("/{id}")
+    public ImovelResponse atualizar(@PathVariable Long id, @RequestBody @Valid ImovelRequest request) {
         return imovelService.atualizar(id, request);
     }
 
-    @PostMapping("{id}")
-    public void deletar(Long id) {
+    @PostMapping("/{id}")
+    public void deletar(@PathVariable Long id) {
         imovelService.deletar(id);
     }
 
