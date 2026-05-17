@@ -76,7 +76,7 @@ public class ImovelService {
     }
 
     private void validarExclusividadeLadoELocalidade(Long ladoId, Long localidadeId) {
-        if ((ladoId == null) ^ (localidadeId == null)) {
+        if ((ladoId == null && localidadeId == null) || (ladoId != null && localidadeId != null)) {
             throw new RegraNegocioException("O imóvel precisa ter um lado ou uma localidade (e apenas um deles).");
         }
     }
@@ -94,14 +94,24 @@ public class ImovelService {
     private void processarNumeroSms(Imovel imovel, String placa, Integer numeroSmsRequest, Long ladoId, Long localidadeId) {
         if (placa == null && numeroSmsRequest == null) {
             if (imovel.getNumeroSms() == null) {
-                Long idBusca = (ladoId != null) ? ladoId : localidadeId;
-                Integer novoNumeroSms = imovelRepository
-                        .findFirstByNumeroSmsOrderByNumeroSmsDesc(idBusca)
+                Integer novoNumeroSms = 0;
+                if (ladoId != null) {
+                    novoNumeroSms = imovelRepository
+                        .findFirstByLadoIdOrderByNumeroSmsDesc(imovel.getLado().getId())
                         .map(Imovel::getNumeroSms)
                         .orElse(0) + 1;
+                    imovel.setNumeroSms(novoNumeroSms);
+                } else {
+                    novoNumeroSms = imovelRepository
+                        .findFirstByLocalidadeIdOrderByNumeroSmsDesc(imovel.getLocalidade().getId())
+                        .map(Imovel::getNumeroSms)
+                        .orElse(0) + 1;
+                }
+
                 imovel.setNumeroSms(novoNumeroSms);
             }
         } else {
+            imovelRepository.abrirEspacoParaNovoImovel(ladoId, numeroSmsRequest);
             imovel.setNumeroSms(numeroSmsRequest);
         }
     }

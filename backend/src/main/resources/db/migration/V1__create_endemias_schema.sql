@@ -58,7 +58,8 @@ CREATE TABLE imovel (
     lado_id BIGINT REFERENCES lado(id),
     localidade_id BIGINT REFERENCES localidade(id),
 
-    CONSTRAINT chk_placa_ou_sms CHECK (placa IS NOT NULL OR numero_sms IS NOT NULL)
+    CONSTRAINT chk_placa_ou_sms CHECK (placa IS NOT NULL OR numero_sms IS NOT NULL),
+    CONSTRAINT chk_lado_ou_localidade CHECK (lado_id IS NOT NULL OR localidade_id IS NOT NULL)
 );
 
 CREATE TABLE ciclo (

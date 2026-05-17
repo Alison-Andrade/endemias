@@ -26,7 +26,7 @@ public record ImovelResponse(
             imovel.getNumeroGatos(),
             imovel.getTipo(),
             imovel.getLado().getId(),
-            imovel.getLocalidade().getId()
+            imovel.getLocalidade() != null ? imovel.getLocalidade().getId() : null
         );
     }
 }
