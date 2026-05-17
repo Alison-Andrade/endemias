@@ -8,7 +8,9 @@ import br.gov.endemias.dto.QuarteiraoRequest;
 import br.gov.endemias.dto.QuarteiraoResponse;
 import br.gov.endemias.entity.Localidade;
 import br.gov.endemias.entity.Quarteirao;
+import br.gov.endemias.exception.RegraNegocioException;
 import br.gov.endemias.repository.QuarteiraoRepository;
+import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 
 @Service
@@ -38,6 +40,8 @@ public class QuarteiraoService {
                         .orElse(0);
 
                 quarteirao.setSequencia(maiorSequenciaAtual + 1);
+            } else {
+                quarteirao.setSequencia(0);
             }
         }
 
@@ -50,7 +54,7 @@ public class QuarteiraoService {
         return QuarteiraoResponse.fromEntity(quarteiraoSalvo);
     }
 
-    public List<Quarteirao> listarPorLocalidade(String localidadeCodigo) {
+    public List<QuarteiraoResponse> listarPorLocalidade(String localidadeCodigo) {
         return quarteiraoRepository.findAllByLocalidadeCodigo(localidadeCodigo);
     }
 
@@ -60,7 +64,7 @@ public class QuarteiraoService {
     }
 
     public QuarteiraoResponse atualizar(Long id, QuarteiraoRequest request) {
-        throw new RuntimeException("TO-DO");
+        throw new RegraNegocioException("TO-DO");
         
         // Quarteirao quarteirao = buscarEntityById(id);
         // quarteirao.setId(id);
@@ -72,18 +76,21 @@ public class QuarteiraoService {
         // return QuarteiraoResponse.fromEntity(quarteirao);
     }
 
+    @Transactional
     public void deletar(Long id) {
         Quarteirao quarteirao = buscarEntityById(id);
+
+        Integer numero = quarteirao.getNumero();
+        Integer sequencia = quarteirao.getSequencia();
+        Long idLocalidade = quarteirao.getLocalidade().getId();
+
         quarteiraoRepository.delete(quarteirao);
+        quarteiraoRepository.reordenarSequenciaLocalidade(numero, idLocalidade, sequencia);
     }
-
-
 
     private Quarteirao buscarEntityById(Long id) {
         return quarteiraoRepository.findById(id)
-                .orElseThrow(() -> new RuntimeException("Quarteirão não encontrado"));
+                .orElseThrow(() -> new RegraNegocioException("Quarteirão não encontrado"));
     }
-
-    
 
 }
