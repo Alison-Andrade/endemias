@@ -26,16 +26,7 @@ public class AgenteService {
 
         Agente agente = request.toEntity();
 
-        if (request.supervisorId() != null) {
-            Agente supervisor = repository.findById(request.supervisorId())
-                .orElseThrow(() -> new RuntimeException("Supervisor não encontrado."));
-
-            if (supervisor.getTipo() != TipoAgente.SUPERVISOR) {
-                throw new RuntimeException("O agente informado como supervisor não é SUPERVISOR.");
-            }
-
-            agente.setSupervisor(supervisor);
-        }
+        agente.setSupervisor(buscarEValidarSupervisor(request.supervisorId()));
 
         Agente agenteSalvo = repository.save(agente);
 
@@ -54,7 +45,19 @@ public class AgenteService {
     public AgenteResponse atualizar(Long id, AgenteRequest request) {
         Agente agente = buscarEntityPorId(id);
 
+        if (request.cpf() != null && !request.cpf().equals(agente.getCpf()) && repository.existsByCpf(request.cpf())) {
+            throw new RuntimeException("Já existe outro agente cadastrado com esse cpf.");
+        }
+
+        TipoAgente tipoAtual = agente.getTipo();
+
         request.preencher(agente);
+
+        if (request.tipo() == null) {
+            agente.setTipo(tipoAtual);
+        }
+
+        agente.setSupervisor(buscarEValidarSupervisor(request.supervisorId()));
         Agente agenteAtualizado = repository.save(agente);
         return AgenteResponse.fromEntity(agenteAtualizado);
     }
@@ -69,4 +72,19 @@ public class AgenteService {
                 .orElseThrow(() -> new RuntimeException("Agente não encontrado"));
     }
 
+    private Agente buscarEValidarSupervisor(Long supervisorId) {
+
+        if (supervisorId == null) {
+            return null;
+        }
+
+        Agente supervisor = repository.findById(supervisorId)
+        .orElseThrow(() -> new RuntimeException("Supervisor não encontrado."));
+
+        if (supervisor.getTipo() != TipoAgente.SUPERVISOR) {
+            throw new RuntimeException("O agente informado como supervisor não é SUPERVISOR.");
+        }
+
+        return supervisor;
+    }
 }
