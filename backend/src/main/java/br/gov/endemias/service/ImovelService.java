@@ -21,45 +21,15 @@ public class ImovelService {
 
     public ImovelResponse cadastrar(ImovelRequest request) {
 
-        if ((request.ladoId() == null) ^ (request.localidadeId() == null)) {
-            throw new RegraNegocioException("O imovel precisa ter um lado ou uma localidade");
-        }
-        
+        validarExclusividadeLadoELocalidade(request.ladoId(), request.localidadeId());
+
         Imovel imovel = request.toEntity();
+        
+        atribuirLadoOuLocalidade(imovel, request.ladoId(), request.localidadeId());
 
-        if (request.ladoId() != null) {
-            imovel.setLado(ladoService.buscarEntityPorId(request.ladoId()));
-        } else {
-            imovel.setLocalidade(localidadeService.buscarEntityPorId(request.localidadeId()));
-        }
+        processarNumeroSms(imovel, request.placa(), request.numeroSms(), request.ladoId(), request.localidadeId());
+        processarPlacaESequencia(imovel, request.placa(), request.ladoId(), imovel.getPlaca());
 
-        if (request.placa() == null && request.numeroSms() == null) {
-
-            Long idBusca = (request.ladoId() != null) ? request.ladoId() : request.localidadeId();
-
-            Integer numeroSms = imovelRepository
-                    .findFirstByNumeroSmsOrderByNumeroSmsDesc(idBusca)
-                    .map(Imovel::getNumeroSms)
-                    .orElse(0) + 1;
-
-            imovel.setNumeroSms(numeroSms);
-        }
-
-        if (request.placa() != null) {
-            imovel.setPlaca(request.placa());
-
-            boolean jaExistePlaca = imovelRepository.existsByPlacaAndLadoId(request.placa(), request.ladoId());
-            
-            Integer sequencia = 0;
-            if (jaExistePlaca) {
-                sequencia = imovelRepository
-                    .findFirstByPlacaAndLadoIdOrderBySequenciaDesc(request.placa(), request.ladoId())
-                    .map(Imovel::getSequencia)
-                    .orElse(0) + 1;
-                imovel.setSequencia(sequencia);
-            }
-            imovel.setSequencia(sequencia);
-        }
         return ImovelResponse.fromEntity(imovelRepository.save(imovel));
     }
 
@@ -73,7 +43,24 @@ public class ImovelService {
     }
 
     public ImovelResponse atualizar(Long id, ImovelRequest request) {
-        throw new RegraNegocioException("TO-DO");
+        Imovel imovel = buscarEntityPorId(id);
+        String placaAntiga = imovel.getPlaca();
+
+        Long ladoId = request.ladoId() != null ? request.ladoId() : ( imovel.getLado() != null ? imovel.getLado().getId() : null);
+        Long localidadeId = request.localidadeId() != null ? request.localidadeId() : ( imovel.getLocalidade() != null ? imovel.getLocalidade().getId() : null);
+        
+        validarExclusividadeLadoELocalidade(ladoId, localidadeId);
+        atribuirLadoOuLocalidade(imovel, request.ladoId(), request.localidadeId());
+
+        processarNumeroSms(imovel, request.placa(), request.numeroSms(), ladoId, localidadeId);
+        processarPlacaESequencia(imovel, request.placa(), ladoId, placaAntiga);
+        
+        imovel.setNumeroResidentes(request.numeroResidentes());
+        imovel.setNumeroCaes(request.numeroCaes());
+        imovel.setNumeroGatos(request.numeroGatos());
+        imovel.setTipo(request.tipo());
+
+        return ImovelResponse.fromEntity(imovelRepository.save(imovel));
     }
 
     public void deletar(Long id) {
@@ -87,6 +74,61 @@ public class ImovelService {
                 () -> new RegraNegocioException("Imovel não encontrado")
             );
     }
+
+    private void validarExclusividadeLadoELocalidade(Long ladoId, Long localidadeId) {
+        if ((ladoId == null) ^ (localidadeId == null)) {
+            throw new RegraNegocioException("O imóvel precisa ter um lado ou uma localidade (e apenas um deles).");
+        }
+    }
+
+    private void atribuirLadoOuLocalidade(Imovel imovel, Long ladoId, Long localidadeId) {
+        if (ladoId != null) {
+            imovel.setLado(ladoService.buscarEntityPorId(ladoId));
+            imovel.setLocalidade(null);
+        } else if (localidadeId != null) {
+            imovel.setLocalidade(localidadeService.buscarEntityPorId(localidadeId));
+            imovel.setLado(null);
+        }
+    }
+
+    private void processarNumeroSms(Imovel imovel, String placa, Integer numeroSmsRequest, Long ladoId, Long localidadeId) {
+        if (placa == null && numeroSmsRequest == null) {
+            if (imovel.getNumeroSms() == null) {
+                Long idBusca = (ladoId != null) ? ladoId : localidadeId;
+                Integer novoNumeroSms = imovelRepository
+                        .findFirstByNumeroSmsOrderByNumeroSmsDesc(idBusca)
+                        .map(Imovel::getNumeroSms)
+                        .orElse(0) + 1;
+                imovel.setNumeroSms(novoNumeroSms);
+            }
+        } else {
+            imovel.setNumeroSms(numeroSmsRequest);
+        }
+    }
+
+    private void processarPlacaESequencia(Imovel imovel, String placaRequest, Long ladoId, String placaAntiga) {
+        if (placaRequest != null) {
+            imovel.setPlaca(placaRequest);
+
+            boolean placaMudou = !placaRequest.equals(placaAntiga);
+
+            if (placaMudou) {
+                boolean jaExistePlaca = imovelRepository.existsByPlacaAndLadoId(placaRequest, ladoId);
+                Integer sequencia = 0;
+                if (jaExistePlaca) {
+                    sequencia = imovelRepository
+                        .findFirstByPlacaAndLadoIdOrderBySequenciaDesc(placaRequest, ladoId)
+                        .map(Imovel::getSequencia)
+                        .orElse(0) + 1;
+                }
+                imovel.setSequencia(sequencia);
+            }
+        } else {
+            imovel.setPlaca(null);
+            imovel.setSequencia(null);
+        }
+    }
+
 
 
 }
