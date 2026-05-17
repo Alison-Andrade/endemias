@@ -32,7 +32,11 @@ public class Imovel {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    private String numero;
+    private String placa;
+
+    @Column(name = "numero_sms")
+    private Integer numeroSms;
+
     private Integer sequencia;
     
     @Column(name = "num_residentes")
