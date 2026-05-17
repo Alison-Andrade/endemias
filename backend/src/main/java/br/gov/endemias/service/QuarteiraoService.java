@@ -88,7 +88,7 @@ public class QuarteiraoService {
         quarteiraoRepository.reordenarSequenciaLocalidade(numero, idLocalidade, sequencia);
     }
 
-    private Quarteirao buscarEntityById(Long id) {
+    public Quarteirao buscarEntityById(Long id) {
         return quarteiraoRepository.findById(id)
                 .orElseThrow(() -> new RegraNegocioException("Quarteirão não encontrado"));
     }

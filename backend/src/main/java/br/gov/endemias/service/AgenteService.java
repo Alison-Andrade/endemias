@@ -10,32 +10,31 @@ import br.gov.endemias.entity.Agente;
 import br.gov.endemias.enums.TipoAgente;
 import br.gov.endemias.exception.RegraNegocioException;
 import br.gov.endemias.repository.AgenteRepository;
+import lombok.RequiredArgsConstructor;
 
 @Service
+@RequiredArgsConstructor
 public class AgenteService {
     
-    private final AgenteRepository repository;
+    private final AgenteRepository agenteRepository;
 
-    public AgenteService(AgenteRepository repository) {
-        this.repository = repository;
-    }
 
     public AgenteResponse cadastrar(AgenteRequest request) {
-        if (request.cpf() != null && repository.existsByCpf(request.cpf())) {
-            throw new RuntimeException("Já existe agente cadastrado com esse cpf.");
+        if (request.cpf() != null && agenteRepository.existsByCpf(request.cpf())) {
+            throw new RegraNegocioException("Já existe agente cadastrado com esse cpf.");
         }
 
         Agente agente = request.toEntity();
 
         agente.setSupervisor(buscarEValidarSupervisor(request.supervisorId()));
 
-        Agente agenteSalvo = repository.save(agente);
+        Agente agenteSalvo = agenteRepository.save(agente);
 
         return AgenteResponse.fromEntity(agenteSalvo);
     }
 
     public Page<AgenteResponse> listar(Pageable pageable) {
-        return repository.findAll(pageable).map(AgenteResponse::fromEntity);
+        return agenteRepository.findAll(pageable).map(AgenteResponse::fromEntity);
     }
 
     public AgenteResponse buscarPorId(Long id) {
@@ -46,7 +45,7 @@ public class AgenteService {
     public AgenteResponse atualizar(Long id, AgenteRequest request) {
         Agente agente = buscarEntityPorId(id);
 
-        if (request.cpf() != null && !request.cpf().equals(agente.getCpf()) && repository.existsByCpf(request.cpf())) {
+        if (request.cpf() != null && !request.cpf().equals(agente.getCpf()) && agenteRepository.existsByCpf(request.cpf())) {
             throw new RegraNegocioException("Já existe outro agente cadastrado com esse cpf.");
         }
 
@@ -59,17 +58,17 @@ public class AgenteService {
         }
 
         agente.setSupervisor(buscarEValidarSupervisor(request.supervisorId()));
-        Agente agenteAtualizado = repository.save(agente);
+        Agente agenteAtualizado = agenteRepository.save(agente);
         return AgenteResponse.fromEntity(agenteAtualizado);
     }
 
     public void delete(Long id) {
         Agente agente = buscarEntityPorId(id);
-        repository.delete(agente);
+        agenteRepository.delete(agente);
     }
 
     private Agente buscarEntityPorId(Long id) {
-        return repository.findById(id)
+        return agenteRepository.findById(id)
                 .orElseThrow(() -> new RegraNegocioException("Agente não encontrado"));
     }
 
@@ -79,7 +78,7 @@ public class AgenteService {
             return null;
         }
 
-        Agente supervisor = repository.findById(supervisorId)
+        Agente supervisor = agenteRepository.findById(supervisorId)
         .orElseThrow(() -> new RegraNegocioException("Supervisor não encontrado."));
 
         if (supervisor.getTipo() != TipoAgente.SUPERVISOR) {

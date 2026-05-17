@@ -23,6 +23,8 @@ public class Lado {
 
     private Integer numero;
 
+    private String logradouro;
+
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "quarteirao_id")
     private Quarteirao quarteirao;

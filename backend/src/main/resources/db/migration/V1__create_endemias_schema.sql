@@ -34,14 +34,16 @@ CREATE TABLE quarteirao (
     numero INTEGER NOT NULL,
     sequencia INTEGER DEFAULT 0,
     localidade_id BIGINT REFERENCES localidade(id) NOT NULL,
-    area_id BIGINT REFERENCES area(id) ON DELETE SET NULL
+    area_id BIGINT REFERENCES area(id) ON DELETE SET NULL,
+    UNIQUE(numero, sequencia, localidade_id)
 );
 
 CREATE TABLE lado (
     id BIGSERIAL PRIMARY KEY,
     numero INTEGER NOT NULL,
     logradouro VARCHAR(150) NOT NULL,
-    quarteirao_id BIGINT NOT NULL REFERENCES quarteirao(id)
+    quarteirao_id BIGINT NOT NULL REFERENCES quarteirao(id),
+    UNIQUE(quarteirao_id, numero)
 );
 
 CREATE TABLE imovel (
@@ -69,7 +71,8 @@ CREATE TABLE visita (
     observacao TEXT,
     imovel_id BIGINT NOT NULL REFERENCES imovel(id),
     agente_id BIGINT NOT NULL REFERENCES agente(id),
-    ciclo_id BIGINT NOT NULL REFERENCES ciclo(id)
+    ciclo_id BIGINT NOT NULL REFERENCES ciclo(id),
+    UNIQUE(imovel_id, ciclo_id)
 );
 
 CREATE TABLE tratamento (
