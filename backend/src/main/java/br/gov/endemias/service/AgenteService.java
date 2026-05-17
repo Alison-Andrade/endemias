@@ -8,6 +8,7 @@ import br.gov.endemias.dto.AgenteRequest;
 import br.gov.endemias.dto.AgenteResponse;
 import br.gov.endemias.entity.Agente;
 import br.gov.endemias.enums.TipoAgente;
+import br.gov.endemias.exception.RegraNegocioException;
 import br.gov.endemias.repository.AgenteRepository;
 
 @Service
@@ -46,7 +47,7 @@ public class AgenteService {
         Agente agente = buscarEntityPorId(id);
 
         if (request.cpf() != null && !request.cpf().equals(agente.getCpf()) && repository.existsByCpf(request.cpf())) {
-            throw new RuntimeException("Já existe outro agente cadastrado com esse cpf.");
+            throw new RegraNegocioException("Já existe outro agente cadastrado com esse cpf.");
         }
 
         TipoAgente tipoAtual = agente.getTipo();
@@ -69,7 +70,7 @@ public class AgenteService {
 
     private Agente buscarEntityPorId(Long id) {
         return repository.findById(id)
-                .orElseThrow(() -> new RuntimeException("Agente não encontrado"));
+                .orElseThrow(() -> new RegraNegocioException("Agente não encontrado"));
     }
 
     private Agente buscarEValidarSupervisor(Long supervisorId) {
@@ -79,10 +80,10 @@ public class AgenteService {
         }
 
         Agente supervisor = repository.findById(supervisorId)
-        .orElseThrow(() -> new RuntimeException("Supervisor não encontrado."));
+        .orElseThrow(() -> new RegraNegocioException("Supervisor não encontrado."));
 
         if (supervisor.getTipo() != TipoAgente.SUPERVISOR) {
-            throw new RuntimeException("O agente informado como supervisor não é SUPERVISOR.");
+            throw new RegraNegocioException("O agente informado como supervisor não é SUPERVISOR.");
         }
 
         return supervisor;

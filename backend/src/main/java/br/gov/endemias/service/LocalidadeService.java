@@ -7,6 +7,7 @@ import org.springframework.stereotype.Service;
 import br.gov.endemias.dto.LocalidadeRequest;
 import br.gov.endemias.dto.LocalidadeResponse;
 import br.gov.endemias.entity.Localidade;
+import br.gov.endemias.exception.RegraNegocioException;
 import br.gov.endemias.repository.LocalidadeRepository;
 
 @Service
@@ -21,7 +22,7 @@ public class LocalidadeService {
     public LocalidadeResponse cadastrar(LocalidadeRequest request) {
         
         if (request.codigo() != null && localidadeRepository.existsByCodigo(request.codigo())) {
-            throw new RuntimeException("Já existe localidade com esse codigo.");
+            throw new RegraNegocioException("Já existe localidade com esse codigo.");
         }
 
         Localidade localidade = request.toEntity();
@@ -58,13 +59,13 @@ public class LocalidadeService {
 
     public Localidade buscarEntityPorCodigo(String codigo) {
         return localidadeRepository.findByCodigo(codigo)
-                .orElseThrow(() -> new RuntimeException("Localidade não encontrada."));
+                .orElseThrow(() -> new RegraNegocioException("Localidade não encontrada."));
     }
 
 
     private Localidade buscarEntityPorId(Long id) {
         return localidadeRepository.findById(id)
-                .orElseThrow(() -> new RuntimeException("Localidade não encontrada."));
+                .orElseThrow(() -> new RegraNegocioException("Localidade não encontrada."));
     }
 
 }
