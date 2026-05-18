@@ -14,6 +14,8 @@ public interface ImovelRepository extends JpaRepository<Imovel, Long> {
     
     List<ImovelResponse> findAllByLadoId(Long ladoId);
 
+    List<Imovel> findAllByLadoIdIn(List<Long> ladoIdList);
+
     Optional<Imovel> findFirstByLadoIdOrderByNumeroSmsDesc(Long ladoId);
 
     Optional<Imovel> findFirstByLocalidadeIdOrderByNumeroSmsDesc(Long localidadeId);

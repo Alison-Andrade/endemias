@@ -19,6 +19,8 @@ public interface LadoRepository extends JpaRepository<Lado, Long> {
 
     List<LadoResponse> findAllByQuarteiraoId(Long quarteiraoId);
 
+    List<LadoResponse> findAllByQuarteiraoIdIn(List<Long> quarteiraoIdList);
+
     @Modifying
     @Query(
         "UPDATE Lado l SET l.numero = l.numero + 1 " +  
