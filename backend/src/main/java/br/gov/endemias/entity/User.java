@@ -1,5 +1,11 @@
 package br.gov.endemias.entity;
 
+import java.util.Collection;
+import java.util.List;
+
+import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.userdetails.UserDetails;
+
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.FetchType;
@@ -16,7 +22,7 @@ import lombok.Setter;
 @Table(name = "users")
 @Getter
 @Setter
-public class User {
+public class User implements UserDetails {
     
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -31,5 +37,15 @@ public class User {
     @OneToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "agente_id", referencedColumnName = "id", unique = true, nullable = false)
     private Agente agente;
+
+    @Override
+    public Collection<? extends GrantedAuthority> getAuthorities() {
+        return List.of();
+    }
+
+    @Override
+    public String getUsername() {
+        return "";
+    }
 
 }
