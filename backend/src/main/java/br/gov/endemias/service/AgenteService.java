@@ -24,6 +24,10 @@ public class AgenteService {
             throw new RegraNegocioException("Já existe agente cadastrado com esse cpf.");
         }
 
+        if (request.email() != null && agenteRepository.existsByEmail(request.email())) {
+            throw new RegraNegocioException("Já existe agente cadastrado com esse e-mail.");
+        }
+
         Agente agente = request.toEntity();
 
         agente.setSupervisor(buscarEValidarSupervisor(request.supervisorId()));
@@ -67,7 +71,7 @@ public class AgenteService {
         agenteRepository.delete(agente);
     }
 
-    private Agente buscarEntityPorId(Long id) {
+    public Agente buscarEntityPorId(Long id) {
         return agenteRepository.findById(id)
                 .orElseThrow(() -> new RegraNegocioException("Agente não encontrado"));
     }

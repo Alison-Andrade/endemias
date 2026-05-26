@@ -8,5 +8,7 @@ public interface AgenteRepository extends JpaRepository<Agente, Long>{
     
     boolean existsByCpf(String cpf);
 
+    boolean existsByEmail(String email);
+
 
 }

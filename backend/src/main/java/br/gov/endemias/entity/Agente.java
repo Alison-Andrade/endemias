@@ -32,6 +32,7 @@ public class Agente {
     @Column(unique = true, length = 11, columnDefinition = "CHAR(11)")
     @JdbcTypeCode(SqlTypes.CHAR)
     private String cpf;
+    
     private String nome;
     
     @Column(unique = true)
