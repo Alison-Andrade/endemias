@@ -28,6 +28,7 @@ public class UserService {
         AgenteRequest agenteInicial = new AgenteRequest(
             request.agente().nome(),
             request.agente().cpf(),
+            request.agente().matricula(),
             request.agente().telefone(),
             request.agente().email(),
             FuncaoAgente.CAMPO,
@@ -45,9 +46,5 @@ public class UserService {
 
         return UserResponse.fromEntity(userSalvo);
     } 
-
-
-
-
 
 }

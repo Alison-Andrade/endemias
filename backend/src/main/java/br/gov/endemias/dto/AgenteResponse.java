@@ -6,6 +6,7 @@ import br.gov.endemias.domain.enums.FuncaoAgente;
 public record AgenteResponse(
     Long id,
     String cpf,
+    String matricula,
     String nome,
     String email,
     String telefone,
@@ -16,6 +17,7 @@ public record AgenteResponse(
         return new AgenteResponse(
             agente.getId(),
             agente.getCpf(),
+            agente.getMatricula(),
             agente.getNome(),
             agente.getEmail(),
             agente.getTelefone(),
