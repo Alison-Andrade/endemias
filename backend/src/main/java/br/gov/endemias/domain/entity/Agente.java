@@ -47,7 +47,7 @@ public class Agente {
     private String telefone;
 
     @Enumerated(EnumType.STRING)
-    private FuncaoAgente funcao;
+    private FuncaoAgente funcao = FuncaoAgente.CAMPO;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "supervisor_id")

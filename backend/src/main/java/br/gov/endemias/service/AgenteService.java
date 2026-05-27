@@ -28,9 +28,9 @@ public class AgenteService {
             throw new RegraNegocioException("Já existe agente cadastrado com esse e-mail.");
         }
 
+        Agente supervisor = buscarEValidarSupervisor(request.supervisorId());
         Agente agente = request.toEntity();
-
-        agente.setSupervisor(buscarEValidarSupervisor(request.supervisorId()));
+        agente.setSupervisor(supervisor);
 
         Agente agenteSalvo = agenteRepository.save(agente);
 
@@ -61,7 +61,9 @@ public class AgenteService {
             agente.setFuncao(funcaoAtual);
         }
 
-        agente.setSupervisor(buscarEValidarSupervisor(request.supervisorId()));
+        Agente supervisor = buscarEValidarSupervisor(request.supervisorId());
+        agente.setSupervisor(supervisor);
+        
         Agente agenteAtualizado = agenteRepository.save(agente);
         return AgenteResponse.fromEntity(agenteAtualizado);
     }
@@ -86,7 +88,7 @@ public class AgenteService {
         .orElseThrow(() -> new RegraNegocioException("Supervisor não encontrado."));
 
         if (supervisor.getFuncao() != FuncaoAgente.SUPERVISOR) {
-            throw new RegraNegocioException("O agente informado como supervisor não é SUPERVISOR.");
+            throw new RegraNegocioException("O agente informado não é SUPERVISOR.");
         }
 
         return supervisor;
