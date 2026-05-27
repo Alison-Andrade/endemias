@@ -14,7 +14,7 @@ import lombok.Getter;
 import lombok.Setter;
 
 @Entity
-@Table(name = "area")
+@Table(name = "areas")
 @AllArgsConstructor
 @Getter
 @Setter
@@ -28,6 +28,6 @@ public class Area {
     private String numArea;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "agente_responsavel_id")
+    @JoinColumn(name = "agente_id")
     private Agente agenteResponsavel;
 }

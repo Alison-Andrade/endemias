@@ -7,7 +7,7 @@ import lombok.Getter;
 import lombok.Setter;
 
 @Entity
-@Table(name = "liraa")
+@Table(name = "liraas")
 @PrimaryKeyJoinColumn(name = "visita_id")
 @Getter
 @Setter

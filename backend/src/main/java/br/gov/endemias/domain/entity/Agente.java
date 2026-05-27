@@ -3,9 +3,11 @@ package br.gov.endemias.domain.entity;
 import org.hibernate.annotations.JdbcTypeCode;
 import org.hibernate.type.SqlTypes;
 
-import br.gov.endemias.domain.enums.TipoAgente;
+import br.gov.endemias.domain.enums.FuncaoAgente;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
+import jakarta.persistence.EnumType;
+import jakarta.persistence.Enumerated;
 import jakarta.persistence.FetchType;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
@@ -19,7 +21,7 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 @Entity
-@Table(name = "agente")
+@Table(name = "agentes")
 @Getter
 @Setter
 @AllArgsConstructor
@@ -33,6 +35,10 @@ public class Agente {
     @JdbcTypeCode(SqlTypes.CHAR)
     private String cpf;
     
+    @Column(unique = true, length = 7, columnDefinition = "CHAR(7)")
+    @JdbcTypeCode(SqlTypes.CHAR)
+    private String matricula;
+
     private String nome;
     
     @Column(unique = true)
@@ -40,8 +46,8 @@ public class Agente {
     
     private String telefone;
 
-    @JdbcTypeCode(SqlTypes.NAMED_ENUM)
-    private TipoAgente tipo;
+    @Enumerated(EnumType.STRING)
+    private FuncaoAgente funcao;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "supervisor_id")

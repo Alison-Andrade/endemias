@@ -5,7 +5,7 @@ import org.springframework.stereotype.Service;
 
 import br.gov.endemias.domain.entity.Agente;
 import br.gov.endemias.domain.entity.User;
-import br.gov.endemias.domain.enums.TipoAgente;
+import br.gov.endemias.domain.enums.FuncaoAgente;
 import br.gov.endemias.dto.AgenteRequest;
 import br.gov.endemias.dto.AgenteResponse;
 import br.gov.endemias.dto.UserRequest;
@@ -30,7 +30,7 @@ public class UserService {
             request.agente().cpf(),
             request.agente().telefone(),
             request.agente().email(),
-            TipoAgente.CAMPO,
+            FuncaoAgente.CAMPO,
             null
         );
 

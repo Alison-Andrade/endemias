@@ -3,7 +3,7 @@ package br.gov.endemias.dto;
 import org.hibernate.validator.constraints.br.CPF;
 
 import br.gov.endemias.domain.entity.Agente;
-import br.gov.endemias.domain.enums.TipoAgente;
+import br.gov.endemias.domain.enums.FuncaoAgente;
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Pattern;
@@ -25,7 +25,7 @@ public record AgenteRequest(
     @Email(message = "E-mail inválido.")
     @Size(max = 150, message = "O email do agente deve ter no máximo 150 caracteres")
     String email,
-    TipoAgente tipo,
+    FuncaoAgente funcao,
     Long supervisorId
 ) {
     
@@ -40,6 +40,6 @@ public record AgenteRequest(
         agente.setCpf(this.cpf);
         agente.setTelefone(this.telefone);
         agente.setEmail(this.email);
-        agente.setTipo(this.tipo != null ? this.tipo : TipoAgente.CAMPO);
+        agente.setFuncao(this.funcao != null ? this.funcao : FuncaoAgente.CAMPO);
     }
 }

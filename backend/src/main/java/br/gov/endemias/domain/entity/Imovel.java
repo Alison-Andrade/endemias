@@ -1,11 +1,10 @@
 package br.gov.endemias.domain.entity;
 
-import org.hibernate.annotations.JdbcTypeCode;
-import org.hibernate.type.SqlTypes;
-
 import br.gov.endemias.domain.enums.TipoImovel;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
+import jakarta.persistence.EnumType;
+import jakarta.persistence.Enumerated;
 import jakarta.persistence.FetchType;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
@@ -19,7 +18,7 @@ import lombok.Setter;
 
 @Entity
 @Table(
-    name = "imovel", 
+    name = "imoveis", 
     indexes = {
         @Index(name="idx_imovel_lado", columnList = "lado_id")
     }
@@ -48,7 +47,7 @@ public class Imovel {
     @Column(name = "num_gatos")
     private Integer numeroGatos;
 
-    @JdbcTypeCode(SqlTypes.NAMED_ENUM)
+    @Enumerated(EnumType.STRING)
     @Column(name = "tipo")
     private TipoImovel tipo;
     

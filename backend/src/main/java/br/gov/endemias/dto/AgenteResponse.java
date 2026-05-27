@@ -1,7 +1,7 @@
 package br.gov.endemias.dto;
 
 import br.gov.endemias.domain.entity.Agente;
-import br.gov.endemias.domain.enums.TipoAgente;
+import br.gov.endemias.domain.enums.FuncaoAgente;
 
 public record AgenteResponse(
     Long id,
@@ -9,7 +9,7 @@ public record AgenteResponse(
     String nome,
     String email,
     String telefone,
-    TipoAgente tipoAgente,
+    FuncaoAgente funcaoAgente,
     Long supervisorId
 ) {
     public static AgenteResponse fromEntity(Agente agente) {
@@ -19,7 +19,7 @@ public record AgenteResponse(
             agente.getNome(),
             agente.getEmail(),
             agente.getTelefone(),
-            agente.getTipo(),
+            agente.getFuncao(),
             agente.getSupervisor() != null ? agente.getSupervisor().getId() : null
         );
     }

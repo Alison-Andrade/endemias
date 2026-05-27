@@ -13,7 +13,7 @@ import lombok.Setter;
 
 @Entity
 @Table(
-    name = "ciclo",
+    name = "ciclos",
     uniqueConstraints = {
         @UniqueConstraint(
             name = "uk_numero_ano_ciclo",

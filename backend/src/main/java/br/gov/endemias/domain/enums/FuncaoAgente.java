@@ -1,6 +1,6 @@
 package br.gov.endemias.domain.enums;
 
-public enum TipoAgente {
+public enum FuncaoAgente {
     CAMPO,
     SUPERVISOR,
     COORDENADOR

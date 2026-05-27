@@ -5,7 +5,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import br.gov.endemias.domain.entity.Agente;
-import br.gov.endemias.domain.enums.TipoAgente;
+import br.gov.endemias.domain.enums.FuncaoAgente;
 import br.gov.endemias.dto.AgenteRequest;
 import br.gov.endemias.dto.AgenteResponse;
 import br.gov.endemias.exception.RegraNegocioException;
@@ -53,12 +53,12 @@ public class AgenteService {
             throw new RegraNegocioException("Já existe outro agente cadastrado com esse cpf.");
         }
 
-        TipoAgente tipoAtual = agente.getTipo();
+        FuncaoAgente funcaoAtual = agente.getFuncao();
 
         request.preencher(agente);
 
-        if (request.tipo() == null) {
-            agente.setTipo(tipoAtual);
+        if (request.funcao() == null) {
+            agente.setFuncao(funcaoAtual);
         }
 
         agente.setSupervisor(buscarEValidarSupervisor(request.supervisorId()));
@@ -85,7 +85,7 @@ public class AgenteService {
         Agente supervisor = agenteRepository.findById(supervisorId)
         .orElseThrow(() -> new RegraNegocioException("Supervisor não encontrado."));
 
-        if (supervisor.getTipo() != TipoAgente.SUPERVISOR) {
+        if (supervisor.getFuncao() != FuncaoAgente.SUPERVISOR) {
             throw new RegraNegocioException("O agente informado como supervisor não é SUPERVISOR.");
         }
 

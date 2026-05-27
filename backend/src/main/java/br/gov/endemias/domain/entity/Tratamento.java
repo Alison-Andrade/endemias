@@ -2,25 +2,24 @@ package br.gov.endemias.domain.entity;
 
 import java.math.BigDecimal;
 
-import org.hibernate.annotations.JdbcTypeCode;
-import org.hibernate.type.SqlTypes;
-
 import br.gov.endemias.domain.enums.StatusVisita;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
+import jakarta.persistence.EnumType;
+import jakarta.persistence.Enumerated;
 import jakarta.persistence.PrimaryKeyJoinColumn;
 import jakarta.persistence.Table;
 import lombok.Getter;
 import lombok.Setter;
 
 @Entity
-@Table(name = "tratamento")
+@Table(name = "tratamentos")
 @PrimaryKeyJoinColumn(name = "visita_id")
 @Getter
 @Setter
 public class Tratamento extends Visita {
 
-    @JdbcTypeCode(SqlTypes.NAMED_ENUM)
+    @Enumerated(EnumType.STRING)
     private StatusVisita status;
     
     @Column(name = "qntd_eliminados")
