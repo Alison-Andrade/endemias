@@ -4,9 +4,9 @@ import java.util.List;
 
 import org.springframework.stereotype.Service;
 
+import br.gov.endemias.domain.entity.Imovel;
 import br.gov.endemias.dto.ImovelRequest;
 import br.gov.endemias.dto.ImovelResponse;
-import br.gov.endemias.entity.Imovel;
 import br.gov.endemias.exception.RegraNegocioException;
 import br.gov.endemias.repository.ImovelRepository;
 import lombok.RequiredArgsConstructor;

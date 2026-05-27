@@ -2,8 +2,8 @@ package br.gov.endemias.dto;
 
 import org.hibernate.validator.constraints.br.CPF;
 
-import br.gov.endemias.entity.Agente;
-import br.gov.endemias.enums.TipoAgente;
+import br.gov.endemias.domain.entity.Agente;
+import br.gov.endemias.domain.enums.TipoAgente;
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Pattern;

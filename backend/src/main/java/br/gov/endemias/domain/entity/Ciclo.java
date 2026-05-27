@@ -1,4 +1,4 @@
-package br.gov.endemias.entity;
+package br.gov.endemias.domain.entity;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;

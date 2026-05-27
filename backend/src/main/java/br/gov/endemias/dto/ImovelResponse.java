@@ -1,7 +1,7 @@
 package br.gov.endemias.dto;
 
-import br.gov.endemias.entity.Imovel;
-import br.gov.endemias.enums.TipoImovel;
+import br.gov.endemias.domain.entity.Imovel;
+import br.gov.endemias.domain.enums.TipoImovel;
 
 public record ImovelResponse(
     Long id,

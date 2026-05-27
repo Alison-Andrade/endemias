@@ -1,7 +1,7 @@
 package br.gov.endemias.dto;
 
-import br.gov.endemias.entity.Agente;
-import br.gov.endemias.enums.TipoAgente;
+import br.gov.endemias.domain.entity.Agente;
+import br.gov.endemias.domain.enums.TipoAgente;
 
 public record AgenteResponse(
     Long id,

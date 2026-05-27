@@ -7,8 +7,8 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
 
+import br.gov.endemias.domain.entity.Lado;
 import br.gov.endemias.dto.LadoResponse;
-import br.gov.endemias.entity.Lado;
 
 public interface LadoRepository extends JpaRepository<Lado, Long> {
     boolean existsByQuarteiraoIdAndNumero(Long quarteiraoId, Integer numero);

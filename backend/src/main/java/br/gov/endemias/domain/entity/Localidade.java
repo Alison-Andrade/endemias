@@ -1,10 +1,10 @@
-package br.gov.endemias.entity;
+package br.gov.endemias.domain.entity;
 
 import org.hibernate.annotations.JdbcTypeCode;
 import org.hibernate.type.SqlTypes;
 
-import br.gov.endemias.enums.CategoriaLocalidade;
-import br.gov.endemias.enums.TipoLocalidade;
+import br.gov.endemias.domain.enums.CategoriaLocalidade;
+import br.gov.endemias.domain.enums.TipoLocalidade;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;

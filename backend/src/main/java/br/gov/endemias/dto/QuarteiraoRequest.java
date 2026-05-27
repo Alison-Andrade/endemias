@@ -1,6 +1,6 @@
 package br.gov.endemias.dto;
 
-import br.gov.endemias.entity.Quarteirao;
+import br.gov.endemias.domain.entity.Quarteirao;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 

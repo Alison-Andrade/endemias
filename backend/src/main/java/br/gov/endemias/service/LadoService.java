@@ -6,9 +6,9 @@ import java.util.List;
 
 import org.springframework.stereotype.Service;
 
+import br.gov.endemias.domain.entity.Lado;
 import br.gov.endemias.dto.LadoRequest;
 import br.gov.endemias.dto.LadoResponse;
-import br.gov.endemias.entity.Lado;
 import br.gov.endemias.repository.LadoRepository;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;

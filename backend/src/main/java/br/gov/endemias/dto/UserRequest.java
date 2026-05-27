@@ -1,6 +1,6 @@
 package br.gov.endemias.dto;
 
-import br.gov.endemias.entity.User;
+import br.gov.endemias.domain.entity.User;
 import jakarta.validation.Valid;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Size;

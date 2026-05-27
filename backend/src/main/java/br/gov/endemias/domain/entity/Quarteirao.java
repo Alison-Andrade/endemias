@@ -1,4 +1,4 @@
-package br.gov.endemias.entity;
+package br.gov.endemias.domain.entity;
 
 import jakarta.persistence.Entity;
 import jakarta.persistence.FetchType;
@@ -12,21 +12,23 @@ import lombok.Getter;
 import lombok.Setter;
 
 @Entity
-@Table(name = "lado")
+@Table(name = "quarteirao")
 @Getter
 @Setter
-public class Lado {
-
+public class Quarteirao {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
     private Integer numero;
-
-    private String logradouro;
+    private Integer sequencia;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "quarteirao_id")
-    private Quarteirao quarteirao;
-    
+    @JoinColumn(name = "localidade_id")
+    private Localidade localidade;
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "area_id")
+    private Area area;
+
 }

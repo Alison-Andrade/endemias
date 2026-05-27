@@ -3,13 +3,13 @@ package br.gov.endemias.service;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
+import br.gov.endemias.domain.entity.Agente;
+import br.gov.endemias.domain.entity.User;
+import br.gov.endemias.domain.enums.TipoAgente;
 import br.gov.endemias.dto.AgenteRequest;
 import br.gov.endemias.dto.AgenteResponse;
 import br.gov.endemias.dto.UserRequest;
 import br.gov.endemias.dto.UserResponse;
-import br.gov.endemias.entity.Agente;
-import br.gov.endemias.entity.User;
-import br.gov.endemias.enums.TipoAgente;
 import br.gov.endemias.repository.UserRepository;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;

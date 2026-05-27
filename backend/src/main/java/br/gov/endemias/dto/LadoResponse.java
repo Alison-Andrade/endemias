@@ -1,6 +1,6 @@
 package br.gov.endemias.dto;
 
-import br.gov.endemias.entity.Lado;
+import br.gov.endemias.domain.entity.Lado;
 
 public record LadoResponse(
     Long id,

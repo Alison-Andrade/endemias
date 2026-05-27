@@ -1,6 +1,6 @@
 package br.gov.endemias.dto;
 
-import br.gov.endemias.entity.Quarteirao;
+import br.gov.endemias.domain.entity.Quarteirao;
 
 public record QuarteiraoResponse(
     Long id,

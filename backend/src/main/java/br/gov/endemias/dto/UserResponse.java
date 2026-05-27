@@ -1,6 +1,6 @@
 package br.gov.endemias.dto;
 
-import br.gov.endemias.entity.User;
+import br.gov.endemias.domain.entity.User;
 
 public record UserResponse(
     Long id,

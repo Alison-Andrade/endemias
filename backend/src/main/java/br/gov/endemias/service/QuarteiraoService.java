@@ -4,15 +4,15 @@ import java.util.List;
 
 import org.springframework.stereotype.Service;
 
+import br.gov.endemias.domain.entity.Imovel;
+import br.gov.endemias.domain.entity.Localidade;
+import br.gov.endemias.domain.entity.Quarteirao;
 import br.gov.endemias.dto.ImovelResponse;
 import br.gov.endemias.dto.LadoDetalhadoResponse;
 import br.gov.endemias.dto.LadoResponse;
 import br.gov.endemias.dto.QuarteiraoDetalhadoResponse;
 import br.gov.endemias.dto.QuarteiraoRequest;
 import br.gov.endemias.dto.QuarteiraoResponse;
-import br.gov.endemias.entity.Imovel;
-import br.gov.endemias.entity.Localidade;
-import br.gov.endemias.entity.Quarteirao;
 import br.gov.endemias.exception.RegraNegocioException;
 import br.gov.endemias.repository.ImovelRepository;
 import br.gov.endemias.repository.LadoRepository;

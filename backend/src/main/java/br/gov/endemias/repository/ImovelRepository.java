@@ -7,8 +7,8 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
 
+import br.gov.endemias.domain.entity.Imovel;
 import br.gov.endemias.dto.ImovelResponse;
-import br.gov.endemias.entity.Imovel;
 
 public interface ImovelRepository extends JpaRepository<Imovel, Long> {
     

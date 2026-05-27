@@ -1,11 +1,11 @@
-package br.gov.endemias.entity;
+package br.gov.endemias.domain.entity;
 
 import java.math.BigDecimal;
 
 import org.hibernate.annotations.JdbcTypeCode;
 import org.hibernate.type.SqlTypes;
 
-import br.gov.endemias.enums.StatusVisita;
+import br.gov.endemias.domain.enums.StatusVisita;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.PrimaryKeyJoinColumn;

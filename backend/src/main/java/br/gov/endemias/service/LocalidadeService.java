@@ -4,9 +4,9 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
+import br.gov.endemias.domain.entity.Localidade;
 import br.gov.endemias.dto.LocalidadeRequest;
 import br.gov.endemias.dto.LocalidadeResponse;
-import br.gov.endemias.entity.Localidade;
 import br.gov.endemias.exception.RegraNegocioException;
 import br.gov.endemias.repository.LocalidadeRepository;
 

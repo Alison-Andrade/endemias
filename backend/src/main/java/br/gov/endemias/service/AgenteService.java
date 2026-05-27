@@ -4,10 +4,10 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
+import br.gov.endemias.domain.entity.Agente;
+import br.gov.endemias.domain.enums.TipoAgente;
 import br.gov.endemias.dto.AgenteRequest;
 import br.gov.endemias.dto.AgenteResponse;
-import br.gov.endemias.entity.Agente;
-import br.gov.endemias.enums.TipoAgente;
 import br.gov.endemias.exception.RegraNegocioException;
 import br.gov.endemias.repository.AgenteRepository;
 import lombok.RequiredArgsConstructor;

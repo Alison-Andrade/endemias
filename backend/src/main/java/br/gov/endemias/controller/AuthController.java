@@ -1,8 +1,5 @@
 package br.gov.endemias.controller;
 
-import java.net.Authenticator;
-
-import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
@@ -10,11 +7,11 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import br.gov.endemias.config.security.TokenConfig;
+import br.gov.endemias.domain.entity.User;
 import br.gov.endemias.dto.AuthResponse;
 import br.gov.endemias.dto.LoginRequest;
 import br.gov.endemias.dto.UserRequest;
 import br.gov.endemias.dto.UserResponse;
-import br.gov.endemias.entity.User;
 import br.gov.endemias.service.UserService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
@@ -38,7 +35,7 @@ public class AuthController {
 
         User user = (User) auth.getPrincipal();
         String token = tokenConfig.generateToken(user);
-        
+
         return new AuthResponse(token);
     }
 

@@ -1,8 +1,8 @@
 package br.gov.endemias.dto;
 
-import br.gov.endemias.entity.Localidade;
-import br.gov.endemias.enums.CategoriaLocalidade;
-import br.gov.endemias.enums.TipoLocalidade;
+import br.gov.endemias.domain.entity.Localidade;
+import br.gov.endemias.domain.enums.CategoriaLocalidade;
+import br.gov.endemias.domain.enums.TipoLocalidade;
 
 public record LocalidadeResponse(
     Long id,
