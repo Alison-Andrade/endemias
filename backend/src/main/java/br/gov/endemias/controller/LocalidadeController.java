@@ -44,11 +44,6 @@ public class LocalidadeController {
         return localidadeService.buscarPorId(id);
     }
 
-    @GetMapping("/codigo/{codigo}")
-    public LocalidadeResponse buscarPorCodigo(@PathVariable String codigo) {
-        return localidadeService.buscarPorCodigo(codigo);
-    }
-
     @PutMapping("/{id}")
     public LocalidadeResponse atualizar(@PathVariable Long id, @RequestBody @Valid LocalidadeRequest request) {
         return localidadeService.atualizar(id, request);

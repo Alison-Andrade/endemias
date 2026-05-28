@@ -35,15 +35,15 @@ public class QuarteiraoController {
         return quarteiraoService.cadastrar(request);
     }
 
-    @GetMapping("localidade/{codigoLocalidade}")
-    public List<QuarteiraoResponse> listarPorLocalidade(@PathVariable String codigoLocalidade) {
-        return quarteiraoService.listarPorLocalidade(codigoLocalidade);
+    @GetMapping("/localidade/{localidadeId}")
+    public List<QuarteiraoResponse> listarPorLocalidade(@PathVariable Long localidadeId) {
+        return quarteiraoService.listarPorLocalidade(localidadeId);
     }
 
-    @GetMapping("/{id}/detalhado")
-    public QuarteiraoDetalhadoResponse listarDetalhadoPorId(@PathVariable Long id) {
-        return quarteiraoService.buscarDetalhadoPorId(id);
-    }
+    // @GetMapping("/{id}/detalhado")
+    // public QuarteiraoDetalhadoResponse listarDetalhadoPorId(@PathVariable Long id) {
+    //     return quarteiraoService.buscarDetalhadoPorId(id);
+    // }
 
     @PutMapping("/{id}")
     public QuarteiraoResponse atualizar(@PathVariable Long id, @RequestBody @Valid QuarteiraoRequest request) {

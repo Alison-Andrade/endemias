@@ -9,12 +9,17 @@ public record QuarteiraoRequest(
     Integer numero,
     Integer sequencia,
     @NotBlank(message = "O codigo da localidade é obrigatório.")
-    String codigoLocalidade,
+    Long localidadeId,
     Long areaId
 ) {
     public Quarteirao toEntity() {
         Quarteirao quarteirao = new Quarteirao();
-        quarteirao.setNumero(this.numero);
+        preecher(quarteirao);
         return quarteirao;
+    }
+
+    public void preecher(Quarteirao quarteirao) {
+        quarteirao.setNumero(this.numero);
+        quarteirao.setSequencia(this.sequencia != null ? this.sequencia : 0);
     }
 }

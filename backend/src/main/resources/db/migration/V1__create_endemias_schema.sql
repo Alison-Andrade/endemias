@@ -63,7 +63,10 @@ CREATE TABLE imoveis (
     localidade_id BIGINT REFERENCES localidades(id),
 
     CONSTRAINT chk_placa_ou_sms CHECK (placa IS NOT NULL OR numero_sms IS NOT NULL),
-    CONSTRAINT chk_lado_ou_localidade CHECK (lado_id IS NOT NULL OR localidade_id IS NOT NULL),
+    CONSTRAINT chk_lado_ou_localidade CHECK (
+        (lado_id IS NOT NULL AND localidade_id IS NULL) OR
+        (lado_id IS NULL AND localidade_id IS NOT NULL)
+    ),
     CHECK (tipo IN ('RESIDENCIA', 'COMERCIO', 'TERRENO_BALDIO', 'OUTRO'))
 );
 
@@ -80,8 +83,7 @@ CREATE TABLE visitas (
     observacao TEXT,
     imovel_id BIGINT NOT NULL REFERENCES imoveis(id),
     agente_id BIGINT NOT NULL REFERENCES agentes(id),
-    ciclo_id BIGINT NOT NULL REFERENCES ciclos(id),
-    UNIQUE(imovel_id, ciclo_id)
+    ciclo_id BIGINT NOT NULL REFERENCES ciclos(id)
 );
 
 CREATE TABLE tratamentos (

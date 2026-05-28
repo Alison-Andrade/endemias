@@ -4,18 +4,11 @@ import java.util.List;
 
 import org.springframework.stereotype.Service;
 
-import br.gov.endemias.domain.entity.Imovel;
 import br.gov.endemias.domain.entity.Localidade;
 import br.gov.endemias.domain.entity.Quarteirao;
-import br.gov.endemias.dto.ImovelResponse;
-import br.gov.endemias.dto.LadoDetalhadoResponse;
-import br.gov.endemias.dto.LadoResponse;
-import br.gov.endemias.dto.QuarteiraoDetalhadoResponse;
 import br.gov.endemias.dto.QuarteiraoRequest;
 import br.gov.endemias.dto.QuarteiraoResponse;
 import br.gov.endemias.exception.RegraNegocioException;
-import br.gov.endemias.repository.ImovelRepository;
-import br.gov.endemias.repository.LadoRepository;
 import br.gov.endemias.repository.QuarteiraoRepository;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
@@ -26,25 +19,22 @@ public class QuarteiraoService {
     
     private final QuarteiraoRepository quarteiraoRepository;
     private final LocalidadeService localidadeService;
-    
-    private final LadoRepository ladoRepository;
-    private final ImovelRepository imovelRepository;
 
     public QuarteiraoResponse cadastrar(QuarteiraoRequest request) {
 
         Quarteirao quarteirao = request.toEntity();
 
         if (request.numero() != null) {
-            boolean jaExiste = quarteiraoRepository.existsByNumeroAndLocalidadeCodigo(
+            boolean jaExiste = quarteiraoRepository.existsByNumeroAndLocalidadeId(
                 request.numero(),
-                request.codigoLocalidade()
+                request.localidadeId()
             );
 
             if (jaExiste) {
                 int maiorSequenciaAtual = quarteiraoRepository
-                        .findFirstByNumeroAndLocalidadeCodigoOrderBySequenciaDesc(
+                        .findFirstByNumeroAndLocalidadeIdOrderBySequenciaDesc(
                             request.numero(),
-                            request.codigoLocalidade()
+                            request.localidadeId()
                         )
                         .map(q -> q.getSequencia() != null ? q.getSequencia() : 0)
                         .orElse(0);
@@ -55,8 +45,8 @@ public class QuarteiraoService {
             }
         }
 
-        if (request.codigoLocalidade() != null) {
-            Localidade localidade = localidadeService.buscarEntityPorCodigo(request.codigoLocalidade());
+        if (request.localidadeId() != null) {
+            Localidade localidade = localidadeService.buscarEntityPorId(request.localidadeId());
             quarteirao.setLocalidade(localidade);
         }
 
@@ -64,8 +54,8 @@ public class QuarteiraoService {
         return QuarteiraoResponse.fromEntity(quarteiraoSalvo);
     }
 
-    public List<QuarteiraoResponse> listarPorLocalidade(String localidadeCodigo) {
-        return quarteiraoRepository.findAllByLocalidadeCodigo(localidadeCodigo);
+    public List<QuarteiraoResponse> listarPorLocalidade(Long localidadeId) {
+        return quarteiraoRepository.findAllByLocalidadeId(localidadeId);
     }
 
     public QuarteiraoResponse buscarPorId(Long id) {
@@ -73,48 +63,39 @@ public class QuarteiraoService {
         return QuarteiraoResponse.fromEntity(quarteirao);
     }
 
-    public QuarteiraoDetalhadoResponse buscarDetalhadoPorId(Long id) {
-        Quarteirao quarteirao = buscarEntityById(id);
+    // public QuarteiraoDetalhadoResponse buscarDetalhadoPorId(Long id) {
+    //     Quarteirao quarteirao = buscarEntityById(id);
         
-        List<LadoResponse> lados = ladoRepository.findAllByQuarteiraoId(id);
-        List<Long> ladosIds = lados.stream().map(LadoResponse::id).toList();
+    //     List<LadoResponse> lados = ladoRepository.findAllByQuarteiraoId(id);
+    //     List<Long> ladosIds = lados.stream().map(LadoResponse::id).toList();
 
-        List<Imovel> imoveis = imovelRepository.findAllByLadoIdIn(ladosIds);
+    //     List<Imovel> imoveis = imovelRepository.findAllByLadoIdIn(ladosIds);
         
-        List<LadoDetalhadoResponse> ladosDetalhados = lados.stream()
-            .map(lado -> {
-                List<ImovelResponse> imoveisDoLado = imoveis.stream()
-                    .filter(imovel -> imovel.getLado().getId().equals(lado.id()))
-                    .map(ImovelResponse::fromEntity)
-                    .toList();
+    //     List<LadoDetalhadoResponse> ladosDetalhados = lados.stream()
+    //         .map(lado -> {
+    //             List<ImovelResponse> imoveisDoLado = imoveis.stream()
+    //                 .filter(imovel -> imovel.getLado().getId().equals(lado.id()))
+    //                 .map(ImovelResponse::fromEntity)
+    //                 .toList();
                     
-                return new LadoDetalhadoResponse(
-                    lado.id(),
-                    lado.numero(),
-                    lado.logradouro(),
-                    imoveisDoLado
-                );
-            }).toList();
+    //             return new LadoDetalhadoResponse(
+    //                 lado.id(),
+    //                 lado.numero(),
+    //                 lado.logradouro(),
+    //                 imoveisDoLado
+    //             );
+    //         }).toList();
 
-        return new QuarteiraoDetalhadoResponse(
-            quarteirao.getId(),
-            quarteirao.getNumero(),
-            quarteirao.getSequencia(),
-            ladosDetalhados
-        );
-    }
+    //     return new QuarteiraoDetalhadoResponse(
+    //         quarteirao.getId(),
+    //         quarteirao.getNumero(),
+    //         quarteirao.getSequencia(),
+    //         ladosDetalhados
+    //     );
+    // }
 
     public QuarteiraoResponse atualizar(Long id, QuarteiraoRequest request) {
-        throw new RegraNegocioException("TO-DO");
-        
-        // Quarteirao quarteirao = buscarEntityById(id);
-        // quarteirao.setId(id);
-        // quarteirao.setNumero(request.numero());
-        // quarteirao.setSequencia(request.sequencia());
-        // quarteirao.setLocalidade(); 
-        // quarteirao.setArea(null);
-        
-        // return QuarteiraoResponse.fromEntity(quarteirao);
+        throw new RuntimeException("TO-DO");
     }
 
     @Transactional

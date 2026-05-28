@@ -16,13 +16,18 @@ public record ImovelRequest(
 ) {
     public Imovel toEntity() {
         Imovel imovel = new Imovel();
-        imovel.setPlaca(placa);
-        imovel.setSequencia(sequencia);
-        imovel.setNumeroSms(numeroSms);
-        imovel.setNumeroResidentes(numeroResidentes);
-        imovel.setNumeroCaes(numeroCaes);
-        imovel.setNumeroGatos(numeroGatos);
-        imovel.setTipo(tipo);
+        preencher(imovel);
+        
         return imovel;
+    }
+
+    public void preencher(Imovel imovel) {
+        imovel.setPlaca(this.placa);
+        imovel.setSequencia(this.sequencia);
+        imovel.setNumeroSms(this.numeroSms);
+        imovel.setNumeroResidentes(this.numeroResidentes);
+        imovel.setNumeroCaes(this.numeroCaes);
+        imovel.setNumeroGatos(this.numeroGatos);
+        imovel.setTipo(this.tipo);
     }
 }

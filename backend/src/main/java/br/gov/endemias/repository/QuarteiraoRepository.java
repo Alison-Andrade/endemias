@@ -12,11 +12,11 @@ import br.gov.endemias.dto.QuarteiraoResponse;
 
 public interface QuarteiraoRepository extends JpaRepository<Quarteirao, Long> {
 
-    boolean existsByNumeroAndLocalidadeCodigo(Integer numero, String codigoLocalidade);
+    boolean existsByNumeroAndLocalidadeId(Integer numero, Long localidadeId);
     
-    Optional<Quarteirao> findFirstByNumeroAndLocalidadeCodigoOrderBySequenciaDesc(Integer numero, String codigoLocalidade);
+    Optional<Quarteirao> findFirstByNumeroAndLocalidadeIdOrderBySequenciaDesc(Integer numero, Long localidadeId);
 
-    List<QuarteiraoResponse> findAllByLocalidadeCodigo(String codigoLocalidade);
+    List<QuarteiraoResponse> findAllByLocalidadeId(Long localidadeId);
 
     @Modifying
     @Query(
