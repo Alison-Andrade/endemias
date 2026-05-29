@@ -14,6 +14,7 @@ public interface UserRepository extends JpaRepository<User, Long> {
            SELECT u FROM User u JOIN u.agente a
            WHERE a.cpf = :loginInput
            OR a.email = :loginInput
+           OR a.matricula = :loginInput
         """
     )
     Optional<User> findByLoginInput(String loginInput);

@@ -10,7 +10,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 
-import br.gov.endemias.dto.QuarteiraoDetalhadoResponse;
 import br.gov.endemias.dto.QuarteiraoRequest;
 import br.gov.endemias.dto.QuarteiraoResponse;
 import br.gov.endemias.service.QuarteiraoService;

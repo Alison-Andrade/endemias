@@ -9,6 +9,7 @@ import br.gov.endemias.dto.ImovelRequest;
 import br.gov.endemias.dto.ImovelResponse;
 import br.gov.endemias.exception.RegraNegocioException;
 import br.gov.endemias.repository.ImovelRepository;
+import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 
 @Service
@@ -55,10 +56,13 @@ public class ImovelService {
         processarNumeroSms(imovel, request.placa(), request.numeroSms(), ladoId, localidadeId);
         processarPlacaESequencia(imovel, request.placa(), ladoId, placaAntiga);
         
-        imovel.setNumeroResidentes(request.numeroResidentes());
-        imovel.setNumeroCaes(request.numeroCaes());
-        imovel.setNumeroGatos(request.numeroGatos());
-        imovel.setTipo(request.tipo());
+        imovel.setNumeroSms(request.numeroSms() != null ? request.numeroSms() : imovel.getNumeroSms());
+        imovel.setPlaca(request.placa() != null ? request.placa() : imovel.getPlaca());
+        imovel.setSequencia(request.sequencia() != null ? request.sequencia() : imovel.getSequencia());
+        imovel.setNumeroResidentes(request.numeroResidentes() != null ? request.numeroResidentes() : imovel.getNumeroResidentes());
+        imovel.setNumeroCaes(request.numeroCaes() != null ? request.numeroCaes() : imovel.getNumeroCaes());
+        imovel.setNumeroGatos(request.numeroGatos() != null ? request.numeroGatos() : imovel.getNumeroGatos());
+        imovel.setTipo(request.tipo() != null ? request.tipo() : imovel.getTipo());
 
         return ImovelResponse.fromEntity(imovelRepository.save(imovel));
     }
@@ -91,6 +95,7 @@ public class ImovelService {
         }
     }
 
+    @Transactional
     private void processarNumeroSms(Imovel imovel, String placa, Integer numeroSmsRequest, Long ladoId, Long localidadeId) {
         if (placa == null && numeroSmsRequest == null) {
             if (imovel.getNumeroSms() == null) {

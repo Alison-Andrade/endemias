@@ -9,6 +9,7 @@ import org.springframework.data.jpa.repository.Query;
 
 import br.gov.endemias.domain.entity.Imovel;
 import br.gov.endemias.dto.ImovelResponse;
+import jakarta.transaction.Transactional;
 
 public interface ImovelRepository extends JpaRepository<Imovel, Long> {
     
@@ -25,6 +26,7 @@ public interface ImovelRepository extends JpaRepository<Imovel, Long> {
     boolean existsByPlacaAndLadoId(String placa, Long ladoId);
 
     @Modifying
+    @Transactional
     @Query(
         "UPDATE Imovel i SET i.numeroSms = i.numeroSms + 1 " +  
         "WHERE i.lado.id = :ladoId AND i.numeroSms >= :numero"

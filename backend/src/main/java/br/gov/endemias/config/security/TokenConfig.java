@@ -16,7 +16,7 @@ import br.gov.endemias.domain.entity.User;
 @Component
 public class TokenConfig {
     
-    @Value("${JWT_SECRET}")
+    @Value("${JWT_SECRET:secret}")
     private String jwtSecret;
 
     public String generateToken(User user) {
