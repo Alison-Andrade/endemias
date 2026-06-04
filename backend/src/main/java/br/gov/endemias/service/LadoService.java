@@ -1,6 +1,5 @@
 package br.gov.endemias.service;
 
-import br.gov.endemias.exception.RegraNegocioException;
 import br.gov.endemias.exception.ResourceNotFoundException;
 
 import java.util.List;
@@ -32,7 +31,7 @@ public class LadoService {
             ladoRepository.abrirEspacoParaNovoLado(request.quarteiraoId(), request.numero());
             lado.setNumero(request.numero());
         } else {
-            Integer ultimoLado = ladoRepository.findFirstByQuarteiraoIdOrderByNumeroDesc(request.quarteiraoId()).map(Lado::getNumero).orElse(0);
+            Integer ultimoLado = ladoRepository.findFirstByQuarteiraoIdOrderByNumeroDesc(request.quarteiraoId()).map(ladoEntity -> ladoEntity.getNumero()).orElse(0);
 
             lado.setNumero(ultimoLado + 1);
         }

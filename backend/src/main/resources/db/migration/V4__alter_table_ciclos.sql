@@ -1,0 +1,4 @@
+ALTER TABLE ciclos
+ADD COLUMN data_inicio DATE,
+ADD COLUMN data_fim DATE,
+ADD COLUMN concluido BOOLEAN DEFAULT FALSE;

@@ -8,7 +8,6 @@ import br.gov.endemias.domain.entity.Localidade;
 import br.gov.endemias.domain.entity.Quarteirao;
 import br.gov.endemias.dto.QuarteiraoRequest;
 import br.gov.endemias.dto.QuarteiraoResponse;
-import br.gov.endemias.exception.RegraNegocioException;
 import br.gov.endemias.exception.ResourceNotFoundException;
 import br.gov.endemias.repository.QuarteiraoRepository;
 import jakarta.transaction.Transactional;
