@@ -8,6 +8,7 @@ import br.gov.endemias.domain.entity.Agente;
 import br.gov.endemias.domain.entity.Area;
 import br.gov.endemias.dto.AreaRequest;
 import br.gov.endemias.dto.AreaResponse;
+import br.gov.endemias.exception.ResourceNotFoundException;
 import br.gov.endemias.repository.AreaRepository;
 import lombok.RequiredArgsConstructor;
 
@@ -64,7 +65,8 @@ public class AreaService {
     }
 
     public Area buscarEntityPorId(Long id) {
-        return areaRepository.findById(id).get();
+        return areaRepository.findById(id)
+                .orElseThrow(() -> new ResourceNotFoundException("Area não encontrada com id: " + id));
     }
 
 }

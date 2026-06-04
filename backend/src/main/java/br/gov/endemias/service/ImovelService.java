@@ -8,6 +8,7 @@ import br.gov.endemias.domain.entity.Imovel;
 import br.gov.endemias.dto.ImovelRequest;
 import br.gov.endemias.dto.ImovelResponse;
 import br.gov.endemias.exception.RegraNegocioException;
+import br.gov.endemias.exception.ResourceNotFoundException;
 import br.gov.endemias.repository.ImovelRepository;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
@@ -75,7 +76,7 @@ public class ImovelService {
         return imovelRepository
             .findById(id)
             .orElseThrow(
-                () -> new RegraNegocioException("Imovel não encontrado")
+                () -> new ResourceNotFoundException("Imovel não encontrado")
             );
     }
 
@@ -103,13 +104,13 @@ public class ImovelService {
                 if (ladoId != null) {
                     novoNumeroSms = imovelRepository
                         .findFirstByLadoIdOrderByNumeroSmsDesc(imovel.getLado().getId())
-                        .map(Imovel::getNumeroSms)
+                        .map(imovelEntity -> imovelEntity.getNumeroSms())
                         .orElse(0) + 1;
                     imovel.setNumeroSms(novoNumeroSms);
                 } else {
                     novoNumeroSms = imovelRepository
                         .findFirstByLocalidadeIdOrderByNumeroSmsDesc(imovel.getLocalidade().getId())
-                        .map(Imovel::getNumeroSms)
+                        .map(imovelEntity -> imovelEntity.getNumeroSms())
                         .orElse(0) + 1;
                 }
 
@@ -133,7 +134,7 @@ public class ImovelService {
                 if (jaExistePlaca) {
                     sequencia = imovelRepository
                         .findFirstByPlacaAndLadoIdOrderBySequenciaDesc(placaRequest, ladoId)
-                        .map(Imovel::getSequencia)
+                        .map(imovelEntity -> imovelEntity.getSequencia())
                         .orElse(0) + 1;
                 }
                 imovel.setSequencia(sequencia);

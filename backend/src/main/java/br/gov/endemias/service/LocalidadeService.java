@@ -8,6 +8,7 @@ import br.gov.endemias.domain.entity.Localidade;
 import br.gov.endemias.dto.LocalidadeRequest;
 import br.gov.endemias.dto.LocalidadeResponse;
 import br.gov.endemias.exception.RegraNegocioException;
+import br.gov.endemias.exception.ResourceNotFoundException;
 import br.gov.endemias.repository.LocalidadeRepository;
 
 @Service
@@ -54,7 +55,7 @@ public class LocalidadeService {
 
     public Localidade buscarEntityPorId(Long id) {
         return localidadeRepository.findById(id)
-                .orElseThrow(() -> new RegraNegocioException("Localidade não encontrada."));
+                .orElseThrow(() -> new ResourceNotFoundException("Localidade não encontrada com id: " + id));
     }
 
 }

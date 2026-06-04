@@ -1,6 +1,7 @@
 package br.gov.endemias.service;
 
 import br.gov.endemias.exception.RegraNegocioException;
+import br.gov.endemias.exception.ResourceNotFoundException;
 
 import java.util.List;
 
@@ -62,7 +63,7 @@ public class LadoService {
 
     public Lado buscarEntityPorId(Long id) {
         return ladoRepository.findById(id)
-            .orElseThrow(() -> new RegraNegocioException("Lado nao encontrado"));
+            .orElseThrow(() -> new ResourceNotFoundException("Lado não encontrado com id: " + id));
     }
 
 }

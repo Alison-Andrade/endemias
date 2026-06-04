@@ -9,6 +9,7 @@ import br.gov.endemias.domain.enums.FuncaoAgente;
 import br.gov.endemias.dto.AgenteRequest;
 import br.gov.endemias.dto.AgenteResponse;
 import br.gov.endemias.exception.RegraNegocioException;
+import br.gov.endemias.exception.ResourceNotFoundException;
 import br.gov.endemias.repository.AgenteRepository;
 import lombok.RequiredArgsConstructor;
 
@@ -75,7 +76,7 @@ public class AgenteService {
 
     public Agente buscarEntityPorId(Long id) {
         return agenteRepository.findById(id)
-                .orElseThrow(() -> new RegraNegocioException("Agente não encontrado"));
+                .orElseThrow(() -> new ResourceNotFoundException("Agente não encontrado"));
     }
 
     private Agente buscarEValidarSupervisor(Long supervisorId) {
@@ -85,7 +86,7 @@ public class AgenteService {
         }
 
         Agente supervisor = agenteRepository.findById(supervisorId)
-        .orElseThrow(() -> new RegraNegocioException("Supervisor não encontrado."));
+        .orElseThrow(() -> new ResourceNotFoundException("Supervisor não encontrado."));
 
         if (supervisor.getFuncao() != FuncaoAgente.SUPERVISOR) {
             throw new RegraNegocioException("O agente informado não é SUPERVISOR.");
