@@ -12,6 +12,7 @@ import lombok.RequiredArgsConstructor;
 
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.web.PagedModel;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -35,7 +36,7 @@ public class LocalidadeController {
     }
 
     @GetMapping
-    public Page<LocalidadeResponse> listar(Pageable pageable) {
+    public PagedModel<LocalidadeResponse> listar(Pageable pageable) {
         return localidadeService.listar(pageable);
     }
 

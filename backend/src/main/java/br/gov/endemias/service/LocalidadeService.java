@@ -2,6 +2,7 @@ package br.gov.endemias.service;
 
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.web.PagedModel;
 import org.springframework.stereotype.Service;
 
 import br.gov.endemias.domain.entity.Localidade;
@@ -31,8 +32,10 @@ public class LocalidadeService {
         return LocalidadeResponse.fromEntity(localidadeSalva);
     }
 
-    public Page<LocalidadeResponse> listar(Pageable pageable) {
-        return localidadeRepository.findAll(pageable).map(LocalidadeResponse::fromEntity);
+    public PagedModel<LocalidadeResponse> listar(Pageable pageable) {
+        Page<Localidade> localidades = localidadeRepository.findAll(pageable);
+
+        return new PagedModel<>(localidades.map(LocalidadeResponse::fromEntity));
     }
 
     public LocalidadeResponse buscarPorId(Long id) {

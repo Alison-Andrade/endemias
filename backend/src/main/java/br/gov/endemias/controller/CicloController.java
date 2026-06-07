@@ -11,6 +11,7 @@ import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.web.PagedModel;
 import org.springframework.http.HttpStatus;
 
 import br.gov.endemias.dto.CicloRequest;
@@ -34,7 +35,7 @@ public class CicloController {
     }
 
     @GetMapping
-    public Page<CicloResponse> listarCiclos(Pageable pageable) {
+    public PagedModel<CicloResponse> listarCiclos(Pageable pageable) {
         return cicloService.listarCiclos(pageable);
     }
 

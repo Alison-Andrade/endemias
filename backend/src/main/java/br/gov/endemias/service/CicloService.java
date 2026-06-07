@@ -2,6 +2,7 @@ package br.gov.endemias.service;
 
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.web.PagedModel;
 import org.springframework.stereotype.Service;
 
 import br.gov.endemias.domain.entity.Ciclo;
@@ -40,8 +41,9 @@ public class CicloService {
         return CicloResponse.fromEntity(cicloAberto);
     }
 
-    public Page<CicloResponse> listarCiclos(Pageable pageable) {
-        return cicloRepository.findAll(pageable).map(CicloResponse::fromEntity);
+    public PagedModel<CicloResponse> listarCiclos(Pageable pageable) {
+        Page<Ciclo> ciclos = cicloRepository.findAll(pageable);
+        return new PagedModel<>(ciclos.map(CicloResponse::fromEntity));
     }
 
     public CicloResponse concluirCiclo() {
