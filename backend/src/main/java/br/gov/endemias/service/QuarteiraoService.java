@@ -1,11 +1,15 @@
 package br.gov.endemias.service;
 
 import java.util.List;
+import java.util.Optional;
 
 import org.springframework.stereotype.Service;
 
+import br.gov.endemias.domain.entity.Area;
 import br.gov.endemias.domain.entity.Localidade;
 import br.gov.endemias.domain.entity.Quarteirao;
+import br.gov.endemias.dto.LadoDetalhadoResponse;
+import br.gov.endemias.dto.QuarteiraoDetalhadoResponse;
 import br.gov.endemias.dto.QuarteiraoRequest;
 import br.gov.endemias.dto.QuarteiraoResponse;
 import br.gov.endemias.exception.ResourceNotFoundException;
@@ -19,6 +23,8 @@ public class QuarteiraoService {
     
     private final QuarteiraoRepository quarteiraoRepository;
     private final LocalidadeService localidadeService;
+    private final AreaService areaService;
+    private final LadoService ladoService;
 
     public QuarteiraoResponse cadastrar(QuarteiraoRequest request) {
 
@@ -26,9 +32,9 @@ public class QuarteiraoService {
 
         if (request.numero() != null) {
             boolean jaExiste = quarteiraoRepository.existsByNumeroAndLocalidadeId(
-                request.numero(),
-                request.localidadeId()
-            );
+                    request.numero(),
+                    request.localidadeId()
+                );
 
             if (jaExiste) {
                 int maiorSequenciaAtual = quarteiraoRepository
@@ -50,6 +56,11 @@ public class QuarteiraoService {
             quarteirao.setLocalidade(localidade);
         }
 
+        if (request.areaId() != null) {
+            Area area = areaService.buscarEntityPorId(request.areaId());
+            quarteirao.setArea(area);
+        }
+
         Quarteirao quarteiraoSalvo = quarteiraoRepository.save(quarteirao);
         return QuarteiraoResponse.fromEntity(quarteiraoSalvo);
     }
@@ -63,39 +74,34 @@ public class QuarteiraoService {
         return QuarteiraoResponse.fromEntity(quarteirao);
     }
 
-    // public QuarteiraoDetalhadoResponse buscarDetalhadoPorId(Long id) {
-    //     Quarteirao quarteirao = buscarEntityById(id);
+    public QuarteiraoDetalhadoResponse buscarDetalhadoPorId(Long id) {
+        Quarteirao quarteirao = buscarEntityById(id);
         
-    //     List<LadoResponse> lados = ladoRepository.findAllByQuarteiraoId(id);
-    //     List<Long> ladosIds = lados.stream().map(LadoResponse::id).toList();
+        List<LadoDetalhadoResponse> lados = ladoService.listarDetalhadoPorQuarteirao(id);
 
-    //     List<Imovel> imoveis = imovelRepository.findAllByLadoIdIn(ladosIds);
-        
-    //     List<LadoDetalhadoResponse> ladosDetalhados = lados.stream()
-    //         .map(lado -> {
-    //             List<ImovelResponse> imoveisDoLado = imoveis.stream()
-    //                 .filter(imovel -> imovel.getLado().getId().equals(lado.id()))
-    //                 .map(ImovelResponse::fromEntity)
-    //                 .toList();
-                    
-    //             return new LadoDetalhadoResponse(
-    //                 lado.id(),
-    //                 lado.numero(),
-    //                 lado.logradouro(),
-    //                 imoveisDoLado
-    //             );
-    //         }).toList();
+        return QuarteiraoDetalhadoResponse.fromEntity(quarteirao, lados);
+    }
 
-    //     return new QuarteiraoDetalhadoResponse(
-    //         quarteirao.getId(),
-    //         quarteirao.getNumero(),
-    //         quarteirao.getSequencia(),
-    //         ladosDetalhados
-    //     );
-    // }
-
+    
     public QuarteiraoResponse atualizar(Long id, QuarteiraoRequest request) {
-        throw new RuntimeException("TO-DO");
+        Quarteirao quarteirao = buscarEntityById(id);
+
+        Optional.ofNullable(request.numero()).ifPresent(quarteirao::setNumero);
+        Optional.ofNullable(request.sequencia()).ifPresent(quarteirao::setSequencia);
+        
+        Optional.ofNullable(request.localidadeId())
+            .map(localidade -> 
+                localidadeService.buscarEntityPorId(request.localidadeId())
+            )
+            .ifPresent(quarteirao::setLocalidade);
+
+        Optional.ofNullable(request.areaId())
+            .map(area -> 
+                areaService.buscarEntityPorId(request.areaId())
+            )
+            .ifPresent(quarteirao::setArea);
+
+        return QuarteiraoResponse.fromEntity(quarteiraoRepository.save(quarteirao));
     }
 
     @Transactional

@@ -10,6 +10,7 @@ import br.gov.endemias.dto.ImovelResponse;
 import br.gov.endemias.exception.RegraNegocioException;
 import br.gov.endemias.exception.ResourceNotFoundException;
 import br.gov.endemias.repository.ImovelRepository;
+import br.gov.endemias.repository.LadoRepository;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 
@@ -18,7 +19,7 @@ import lombok.RequiredArgsConstructor;
 public class ImovelService {
     
     private final ImovelRepository imovelRepository;
-    private final LadoService ladoService;
+    private final LadoRepository ladoRepository;
     private final LocalidadeService localidadeService;
 
     public ImovelResponse cadastrar(ImovelRequest request) {
@@ -37,6 +38,10 @@ public class ImovelService {
 
     public List<ImovelResponse> listarPorLado(Long ladoId) {
         return imovelRepository.findAllByLadoId(ladoId);
+    }
+
+    public List<Imovel> listarPorLadoIdIn(List<Long> ladoIdList) {
+        return imovelRepository.findAllByLadoIdIn(ladoIdList);
     }
 
     public ImovelResponse buscarPorId(Long id) {
@@ -88,7 +93,8 @@ public class ImovelService {
 
     private void atribuirLadoOuLocalidade(Imovel imovel, Long ladoId, Long localidadeId) {
         if (ladoId != null) {
-            imovel.setLado(ladoService.buscarEntityPorId(ladoId));
+            imovel.setLado(ladoRepository.findById(ladoId)
+                .orElseThrow(() -> new ResourceNotFoundException("Lado nao encontrado")));
             imovel.setLocalidade(null);
         } else if (localidadeId != null) {
             imovel.setLocalidade(localidadeService.buscarEntityPorId(localidadeId));

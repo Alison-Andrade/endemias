@@ -18,8 +18,8 @@ public interface LadoRepository extends JpaRepository<Lado, Long> {
     Optional<Lado> findFirstByQuarteiraoIdOrderByNumeroDesc(Long quarteiraoId);
 
     List<LadoResponse> findAllByQuarteiraoId(Long quarteiraoId);
-
-    List<LadoResponse> findAllByQuarteiraoIdIn(List<Long> quarteiraoIdList);
+    
+    List<Lado> findAllDetalhadoByQuarteiraoId(Long quarteiraoId);
 
     @Modifying
     @Query(
