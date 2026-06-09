@@ -22,6 +22,7 @@ public class ImovelService {
     private final LadoRepository ladoRepository;
     private final LocalidadeService localidadeService;
 
+    @Transactional
     public ImovelResponse cadastrar(ImovelRequest request) {
 
         validarExclusividadeLadoELocalidade(request.ladoId(), request.localidadeId());
@@ -32,6 +33,16 @@ public class ImovelService {
 
         processarNumeroSms(imovel, request.placa(), request.numeroSms(), request.ladoId(), request.localidadeId());
         processarPlacaESequencia(imovel, request.placa(), request.ladoId(), imovel.getPlaca());
+
+        if (request.ordem() != null) {
+            imovel.setOrdem(request.ordem());
+            reordenarImoveis(request.ordem());
+        } else {
+            imovel.setOrdem(imovelRepository
+                .findFirstByLadoIdOrderByOrdemDesc(imovel.getLado().getId())
+                .map(imovelEntity -> imovelEntity.getOrdem())
+                .orElse(0) + 1);
+        }
 
         return ImovelResponse.fromEntity(imovelRepository.save(imovel));
     }
@@ -149,6 +160,10 @@ public class ImovelService {
             imovel.setPlaca(null);
             imovel.setSequencia(null);
         }
+    }
+
+    private void reordenarImoveis(Integer ordem) {
+        imovelRepository.reordenarImoveis(ordem);
     }
 
 

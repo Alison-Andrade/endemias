@@ -7,6 +7,7 @@ public record ImovelRequest(
     String placa,
     Integer sequencia,
     Integer numeroSms,
+    Integer ordem,
     Integer numeroResidentes,
     Integer numeroCaes,
     Integer numeroGatos,

@@ -9,13 +9,14 @@ import org.springframework.data.jpa.repository.Query;
 
 import br.gov.endemias.domain.entity.Imovel;
 import br.gov.endemias.dto.ImovelResponse;
-import jakarta.transaction.Transactional;
 
 public interface ImovelRepository extends JpaRepository<Imovel, Long> {
     
     List<ImovelResponse> findAllByLadoId(Long ladoId);
 
     List<Imovel> findAllByLadoIdIn(List<Long> ladoIdList);
+
+    Optional<Imovel> findFirstByLadoIdOrderByOrdemDesc(Long ladoId);
 
     Optional<Imovel> findFirstByLadoIdOrderByNumeroSmsDesc(Long ladoId);
 
@@ -26,11 +27,18 @@ public interface ImovelRepository extends JpaRepository<Imovel, Long> {
     boolean existsByPlacaAndLadoId(String placa, Long ladoId);
 
     @Modifying
-    @Transactional
     @Query(
         "UPDATE Imovel i SET i.numeroSms = i.numeroSms + 1 " +  
-        "WHERE i.lado.id = :ladoId AND i.numeroSms >= :numero"
+        "WHERE i.lado.id = :ladoId AND i.numeroSms >= :novoNumero"
     )
-    int abrirEspacoParaNovoImovel(Long ladoId, Integer numero);
+    int abrirEspacoParaNovoImovel(Long ladoId, Integer novoNumero);
 
+    @Modifying
+    @Query(
+        """
+        UPDATE Imovel i SET i.ordem = i.ordem + 1
+        WHERE i.lado.id = :ladoId AND i.ordem >= :ordem
+        """
+    )
+    void reordenarImoveis(Integer ordem);
 }

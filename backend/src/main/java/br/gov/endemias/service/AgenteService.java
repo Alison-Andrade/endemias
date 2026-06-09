@@ -2,6 +2,7 @@ package br.gov.endemias.service;
 
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.web.PagedModel;
 import org.springframework.stereotype.Service;
 
 import br.gov.endemias.domain.entity.Agente;
@@ -38,8 +39,10 @@ public class AgenteService {
         return AgenteResponse.fromEntity(agenteSalvo);
     }
 
-    public Page<AgenteResponse> listar(Pageable pageable) {
-        return agenteRepository.findAll(pageable).map(AgenteResponse::fromEntity);
+    public PagedModel<AgenteResponse> listar(Pageable pageable) {
+        Page<Agente> agentes = agenteRepository.findAll(pageable);
+
+        return new PagedModel<>(agentes.map(AgenteResponse::fromEntity));
     }
 
     public AgenteResponse buscarPorId(Long id) {

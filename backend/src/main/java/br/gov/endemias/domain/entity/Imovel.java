@@ -37,6 +37,8 @@ public class Imovel {
     private Integer numeroSms;
 
     private Integer sequencia;
+
+    private Integer ordem;
     
     @Column(name = "num_residentes")
     private Integer numeroResidentes;
