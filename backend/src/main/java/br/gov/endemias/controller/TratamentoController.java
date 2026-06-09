@@ -1,6 +1,10 @@
 package br.gov.endemias.controller;
 
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.web.PagedModel;
 import org.springframework.http.HttpStatus;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -26,5 +30,14 @@ public class TratamentoController {
         return tratamentoService.cadastrar(request);
     }
 
+    @GetMapping
+    public PagedModel<TratamentoResponse> listar(Pageable pageable) {
+        return tratamentoService.listar(pageable);
+    }
 
+    @GetMapping("/{id}")
+    public TratamentoResponse buscarPorId(@PathVariable Long id) {
+        return tratamentoService.buscarPorId(id);
+    }
+    
 }

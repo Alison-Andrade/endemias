@@ -1,5 +1,8 @@
 package br.gov.endemias.service;
 
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.web.PagedModel;
 import org.springframework.stereotype.Service;
 
 import br.gov.endemias.domain.entity.Agente;
@@ -10,6 +13,7 @@ import br.gov.endemias.domain.enums.StatusVisita;
 import br.gov.endemias.dto.TratamentoRequest;
 import br.gov.endemias.dto.TratamentoResponse;
 import br.gov.endemias.exception.RegraNegocioException;
+import br.gov.endemias.exception.ResourceNotFoundException;
 import br.gov.endemias.repository.TratamentoRepository;
 import lombok.RequiredArgsConstructor;
 
@@ -46,7 +50,19 @@ public class TratamentoService {
         Tratamento tratamentoSalvo = tratamentoRepository.save(tratamento);
         
         return TratamentoResponse.fromEntity(tratamentoSalvo);
+    }
 
+    public TratamentoResponse buscarPorId(Long id) {
+        return TratamentoResponse.fromEntity(buscarEntityPorId(id));
+    }
+
+    public PagedModel<TratamentoResponse> listar(Pageable pageable) {
+        Page<Tratamento> tratamentos = tratamentoRepository.findAll(pageable);
+        return new PagedModel<>(tratamentos.map(TratamentoResponse::fromEntity));
+    }
+
+    public Tratamento buscarEntityPorId(Long id) {
+        return tratamentoRepository.findById(id).orElseThrow(() -> new ResourceNotFoundException("Tratamento nao encontrado com id: " + id));
     }
 
 }

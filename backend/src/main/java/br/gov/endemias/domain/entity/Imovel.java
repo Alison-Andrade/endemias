@@ -41,13 +41,13 @@ public class Imovel {
     private Integer ordem;
     
     @Column(name = "num_residentes")
-    private Integer numeroResidentes;
+    private Integer numeroResidentes = 0;
 
     @Column(name = "num_caes")
-    private Integer numeroCaes;
+    private Integer numeroCaes = 0;
 
     @Column(name = "num_gatos")
-    private Integer numeroGatos;
+    private Integer numeroGatos = 0;
 
     @Enumerated(EnumType.STRING)
     @Column(name = "tipo")

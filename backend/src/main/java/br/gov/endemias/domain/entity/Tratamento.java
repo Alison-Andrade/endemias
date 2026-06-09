@@ -23,14 +23,14 @@ public class Tratamento extends Visita {
     private StatusVisita status;
     
     @Column(name = "qntd_eliminados")
-    private Integer numEliminados;
+    private Integer numEliminados = 0;
 
     @Column(name = "qntd_tratados")
-    private Integer numTratados;
+    private Integer numTratados = 0;
 
     @Column(name = "qntd_larvicida")
-    private BigDecimal qntdLarvicida;
+    private BigDecimal qntdLarvicida = BigDecimal.ZERO;
 
     @Column(name = "tipo_larvicida")
-    private String tipoLarvicida;
+    private String tipoLarvicida = "";
 }
